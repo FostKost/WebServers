@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="modules/mod_jino_spectrum_transfer/module-content.css" />
+<script type="text/JavaScript" src="modules/mod_jino_spectrum_transfer/module-content.js"></script>
+<div class="jinotransfer">
+    <h4 class="jinotransfer-header">Перенос сайта на хостинг «Джино.Спектр»</h4>
+    <p>«<a href="http://joomla.jino.ru" target="_blank">Джино.Спектр</a>» — облачный хостинг для сайтов на Joomla! Вам не придется думать о хостинге, поддержке ПО и прочих мелочах: все хлопоты мы возьмем на себя.</p>
+    <p>Для того, чтобы перенести сайт на «Джино.Спектр», надо всего лишь указать один из способов связи с вами: мобильный телефон, e-mail или учетную запись в социальной сети. Если у вас уже есть аккаунт на «Джино», достаточно лишь авторизоваться в нем.</p>
+    <p>А дальше мы все сделаем за вас! Если вы новый пользователь «Джино.Спектр», первые десять дней сайт будет работать бесплатно.</p>
+
+    <div class="jinotransfer-controls" id="transfer-start">
+        <a href="index.php?option=com_ajax&module=jino_spectrum_transfer&format=raw" target="_blank" onclick="window.open(this.href, 'targetWindow', 'toolbar=0, location=0, status=0, menubar=0, scrollbars=1, resizable=0, width=510, height=505'); startAjaxCheck(); return false;"  class="btn btn-success">Начать перенос</a>
+        <a href="http://joomla.jino.ru" target="_blank" class="jinotransfer-controls-textbutton">Подробнее о сервисе «Джино.Спектр»</a>
+    </div>
+    <div class="jinotransfer-controls" style="display: none;" id="transfer-in-process">
+        <div id="button_inprogress" class="btn btn-success disabled">Идёт перенос...</div>
+        <a href="http://joomla.jino.ru" target="_blank" class="jinotransfer-controls-textbutton">Подробнее о сервисе «Джино.Спектр»</a>
+    </div>
+    <div class="jinotransfer-controls" style="display: none;" id="transfer-finish">
+        <a href="" id="transfer-finish-settings" class="btn btn-success btn-large">Войти в «Джино.Спектр»</a>
+    </div>
+</div>

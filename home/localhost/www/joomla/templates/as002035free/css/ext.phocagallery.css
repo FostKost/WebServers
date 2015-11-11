@@ -1,0 +1,14 @@
+
+/**************************************************************************************/
+/*
+/*		Web: http://www.asdesigning.com
+/*		Web: http://www.astemplates.com
+/*		License: GNU/GPL
+/*
+/**************************************************************************************/
+
+#phocagallery-module-ri div.mosaic img
+{
+	max-width: none;
+	max-height: none;	
+}

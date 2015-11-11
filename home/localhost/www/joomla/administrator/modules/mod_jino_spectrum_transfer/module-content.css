@@ -1,0 +1,60 @@
+.jinotransfer {
+    position: relative;
+    padding: 10px 25px 10px 270px;
+    background: url('./transfer-to-spectrum.png') 34px 41px no-repeat; /* 34px = 270px - 203px / 2; 41px = 10px 16px + 15px */
+}
+@media (max-width: 767px) {
+    .jinotransfer {
+        padding-left: 25px;
+        padding-top: 94px; /* 94px = 10px + 64px + 20px */
+        background-position: 25px 10px;
+    }
+}
+.jinotransfer-header {
+    margin: 0 0 15px;
+}
+.jinotransfer p {
+    margin: 10px 0;
+}
+.jinotransfer-controls {
+    margin-top: 20px;
+}
+.jinotransfer-controls-textbutton {
+    margin-left: 20px;
+}
+
+.jinotransfer-done {
+    padding: 5px 0 10px !important;
+    background: none;
+    }
+.jinotransfer-done-buttons {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.jinotransfer-done-button {
+    float: left;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+}
+.jinotransfer-done-link:link,
+.jinotransfer-done-link:visited {
+    display: block;
+    padding-top: 89px; /* 89px = 10px + 64px + 15px */
+    background-position: 50% 10px;
+    background-repeat: no-repeat;
+    color: #5f6062;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: underline;
+}
+.jinotransfer-done-link:hover,
+.jinotransfer-done-link:active {
+    color: #333;
+}
+.jinotransfer-done-button-settings > .jinotransfer-done-link { background-image: url('./done-settings.png'); }
+.jinotransfer-done-button-adddomain > .jinotransfer-done-link { background-image: url('./done-adddomain.png'); }
+.jinotransfer-done-button-regdomain > .jinotransfer-done-link { background-image: url('./done-regdomain.png'); }
+.jinotransfer-done-button-help > .jinotransfer-done-link { background-image: url('./done-help.png'); }

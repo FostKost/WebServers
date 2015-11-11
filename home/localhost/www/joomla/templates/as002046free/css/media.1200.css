@@ -1,0 +1,40 @@
+
+/***************************************************************************************/
+/*
+/*		Author: AS Designing
+/*		Author URI: http://www.asdesigning.com
+/*		Theme URI: http://www.astemplates.com
+/*		
+/*		Note: Design for Large desktop
+/*
+/***************************************************************************************/
+
+@media (max-width: 1200px) 
+{
+	h1,
+	h2
+	{
+		font-size: 30px;
+	}
+
+	#logo-row .mod-search_searchword
+	{
+		width: 230px;
+	}
+	
+	.slide_title
+	{
+		font-size: 100px;
+	}
+	
+	.camera_caption a.readmore
+	{
+		right: 60px;
+	}
+	
+	.mod-newsflash-adv__links .item_content ul li a
+	{
+		font-size: 12px;
+	}
+	
+}

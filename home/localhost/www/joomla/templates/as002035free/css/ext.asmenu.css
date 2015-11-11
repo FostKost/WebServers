@@ -1,0 +1,277 @@
+
+/**************************************************************************************/
+/*
+/*		Web: http://www.asdesigning.com
+/*		Web: http://www.astemplates.com
+/*		License: GNU/GPL
+/*
+/**************************************************************************************/
+
+#as-menu .as-menu,
+#as-menu .as-menu *
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.navigation #as-menu
+{
+	background: transparent;
+	border-radius: 0;
+	position: relative;
+	min-height: 60px;
+	margin-top: 40px;
+	float: right;	
+}
+
+
+#as-menu ul.as-menu
+{
+	position: relative;
+	z-index: 150;
+	line-height: 1.0;
+}
+
+#as-menu ul.as-menu a
+{
+	display: block;
+	position: relative;
+}
+
+#as-menu ul.as-menu li:hover
+{
+	visibility: inherit;
+}
+
+#as-menu ul.as-menu li
+{
+	float: left;
+	position: relative;
+}
+
+.navigation #as-menu ul.as-menu > li
+
+{
+	padding: 0 0 10px;
+	margin: 0;
+	width: auto !important;
+	text-align: center;
+	background: none;
+	list-style:none;
+}
+.navigation #as-menu ul.as-menu > li.active,
+.navigation #as-menu ul.as-menu > li.current
+{
+   
+}
+
+.navigation #as-menu ul.as-menu > li.asHover,
+.navigation #as-menu ul.as-menu > li:hover
+{
+    
+}
+
+.navigation #as-menu ul.as-menu > li.active > a,
+.navigation #as-menu ul.as-menu > li:hover > a,
+.navigation #as-menu ul.as-menu > li.asHover > a,
+.navigation #as-menu ul.as-menu > li.current > a,
+.navigation #as-menu ul.as-menu > li.active > span,
+.navigation #as-menu ul.as-menu > li.asHover > span,
+.navigation #as-menu ul.as-menu > li.current > span
+{
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ddd)); /* Saf4+, Chrome */
+	background-image:  -webkit-linear-gradient(top, #eee, #ddd) ; /* Chrome 10+, Saf5.1+ */
+	background-image:  -moz-linear-gradient(top, #eee, #ddd) ; /* FF3.6+ */
+	background-image:  -ms-linear-gradient(top, #eee, #ddd) ; /* IE10 */
+	background-image: -o-linear-gradient(top, #eee, #ddd) ; /* Opera 11.10+ */
+	background-image:  linear-gradient(top, #eee, #ddd); /* W3C */
+    border: 0;
+    border-radius: 25px;
+    box-shadow: 0px 2px 2px 0px #999999;    
+}
+
+#as-menu ul.as-menu > li + li
+{
+	margin-left: 10px !important;
+}
+
+#as-menu ul.as-menu > li.firstItem,
+#as-menu ul.as-menu > li:first-child
+{
+	background: none repeat scroll 0 0 transparent
+}
+
+.navigation #as-menu ul.as-menu > li > a,
+#as-menu ul.as-menu > li > span
+{
+    color: #333;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px  25px ;
+    text-align: center;
+    text-decoration: none;
+    text-transform: capitalize;
+    width: auto;   
+ 	
+}
+
+#as-menu ul.as-menu > li > a:hover,
+#as-menu ul.as-menu > li > span:hover
+{
+	background: none;
+	color: #000;
+}
+
+#as-menu ul.as-menu > li > a:hover > span,
+#as-menu ul.as-menu > li > span:hover > span
+{
+	background-position: center bottom !important;
+}
+
+#as-menu ul.as-menu > li.deeper > a
+{
+	position: relative;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+
+#as-menu ul.as-menu > li.deeper > a:after
+{
+	display: inline-block;
+	width: 7px;
+	height: 5px;
+	position: relative;
+	left: 12px;
+	top: -3px;
+	content: none;   /* content: ""; */
+}
+
+#as-menu ul.as-menu li:hover > ul,
+#as-menu ul.as-menu li.asHover > ul
+{
+	top: 75px;
+}
+
+#as-menu ul.as-menu ul
+{
+	width: 191px;
+	display: none;	
+}
+
+.navigation #as-menu ul.as-menu ul
+{
+	position: absolute;
+	background: #A1A1A1;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;	
+}
+
+
+#as-menu ul.as-menu li:hover ul,
+#as-menu ul.as-menu li.asHover ul
+{
+	left: 0;
+	top: 45px;
+	z-index: 100;
+}
+
+#as-menu ul.as-menu li:hover li ul,
+#as-menu ul.as-menu li.asHover li ul
+{
+	top: -999em;
+}
+
+#as-menu ul.as-menu ul li
+{
+	width: 100%;
+	margin: 0 0 1px 0;
+	list-style: none;	
+}
+
+#as-menu ul.as-menu ul > li.deeper > a:after
+{
+	display: inline-block;
+	background: url('../images/dds.arrow.png') left top no-repeat;
+	width: 5px;
+	height: 7px;
+	position: relative;
+	left: -20px;
+	top: 9px;
+	float: right;
+	content: "";
+}
+
+.navigation #as-menu ul.as-menu ul ul
+{
+	left: 192px !important;
+	top: -10px !important;
+}
+
+#as-menu ul.as-menu ul li.firstItem
+{
+	border: none;
+}
+
+#as-menu ul.as-menu ul li a,
+#as-menu ul.as-menu ul li span
+{
+	text-transform: lowercase;
+}
+
+.navigation #as-menu ul.as-menu ul li a
+{
+    color: #fff;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 26px;
+    padding: 0 0 0 30px;
+    text-align: left;
+    text-decoration: none;
+    
+
+}
+.navigation #as-menu ul.as-menu ul li:hover
+{
+    
+}
+
+
+#as-menu ul.as-menu ul li a:hover,
+#as-menu ul.as-menu ul li span:hover,
+#as-menu ul.as-menu ul li.active > a,
+#as-menu ul.as-menu ul li.asHover > a,
+#as-menu ul.as-menu ul li.active > span,
+#as-menu ul.as-menu ul li.asHover > span
+{
+	color: #000;
+}
+
+
+#as-menu ul.as-menu li li:hover ul,
+#as-menu ul.as-menu li li.asHover ul
+{
+	left: 10em;
+	top: 0;
+}
+
+#as-menu ul.as-menu li li:hover li ul,
+#as-menu ul.as-menu li li.asHover li ul
+{
+	top: -999em;
+}
+
+#as-menu ul.as-menu li li:hover ul,
+#as-menu ul.as-menu li li.asHover ul
+{
+	top: -1em;
+	left: 191px;
+}
+
+#as-menu ul.as-menu li li li:hover ul,
+#as-menu ul.as-menu li li li.asHover ul
+{
+	top: -1em;
+	left: 191px;
+}

@@ -1,0 +1,246 @@
+/***************************************************************************************/
+/*
+/*		Author: AS Designing
+/*		Author URI: http://www.asdesigning.com
+/*		Theme URI: http://www.astemplates.com
+/*		
+/*		Note: Design for a width of 767px (Landscape phone to portrait tablet)
+/*
+/***************************************************************************************/
+
+@media (max-width: 767px) 
+{
+
+	body
+	{
+		padding: 0 !important;
+	}
+	
+	.container
+	{
+		margin-left: 20px !important;
+		margin-right: 20px !important;
+	}
+	
+	#wrapper
+	{
+		margin: 0;
+	}
+	
+	#push
+	{
+		display: none;
+	}
+
+	.mod-menu__social
+	{
+		margin-right: 80px;
+	}
+	
+	#logo-row #logo
+	{
+		margin-bottom: 0px;	
+	}
+	
+	#logo-row .container
+	{
+		padding: 25px 0px 25px 0px;
+	}
+	
+	#logo-row .moduletable.call-now div 
+	{
+    	padding: 15px 45px 0 0;
+	}	
+	
+	#logo-row .mod-search
+	{
+		margin-left: 40px;
+	}
+	
+	#logo-row .moduletable.call-now
+	{
+		margin-bottom: 0px;	
+	}
+	
+	.moduletable.navigation
+	{
+		width: 99.5%;
+		margin: 5px auto 0px;
+	}
+	
+	#navigation-row
+	{
+		position: relative;
+	}
+	
+	#navigation-row .container
+	{
+		margin-bottom: 30px;
+	}
+	
+	#navigation-row .shadow span
+	{
+		display: none;
+	}
+		
+	.moduletable.slider
+	{
+		overflow: hidden;
+	}
+	
+	.slide_title
+	{
+		display: none !important;
+	}
+	
+	#camera-slideshow .camera_caption p
+	{
+		display: none !important;
+	}
+	
+	.camera_caption a.readmore
+	{
+		right: inherit;
+	}
+	
+	.mod-newsflash-adv__links .item__module
+	{
+		width: 48%;
+		margin: 0 1% 20px;
+		float: left;
+	}
+	
+	.page-blog .items-row.cols-3 .item_img.img-intro 
+	{
+		width: 98.5%;
+	}
+	
+	.page-blog .items-row .span6 .item
+	{
+		border-bottom: 1px solid #D4D4D4;
+		margin-bottom: 30px;
+		padding-bottom: 20px;
+		overflow: hidden;
+	}
+	
+	.page-blog .items-row.cols-2	
+	{
+		border-bottom: none;
+		margin-bottom: 0px;
+		padding-bottom: 0px;
+		overflow: hidden;
+	}	
+	
+	.page-category__clients .item
+	{
+		overflow: hidden;
+		margin-bottom: 20px;
+	}
+	
+	.page-category__clients .item_img
+	{
+		float: left;
+		margin-right: 20px;
+		clear: none !important;
+	}
+	
+	.item-image.blog-image
+	{
+		float: none;
+		margin: 0 0 20px 0;
+	}
+
+	.img-full__left.span5
+	{
+		width: 50%;
+	}
+		
+	.row-fluid [class*="itemSpan"] 
+	{
+		display: block;
+		float: none;
+		margin-left: 0;
+		width: auto;
+	}
+	
+	.span9 .row-fluid [class*="span"] .img-intro__none,
+	.span9 .row-fluid [class*="span"] .img-full__none,
+	.span6 .row-fluid [class*="span"] .img-intro__none,
+	.span6 .row-fluid [class*="span"] .img-full__none
+	{
+		width: 98.5%;	
+	}	
+
+	.page-item
+	{
+		padding-bottom: 0px;
+	}
+	
+	.page-gallery .item_img.img-intro
+	{
+		float: left;
+		margin: 0 20px 20px 0;
+	}
+	
+	.contact_form
+	{
+		width: 50%;
+	}
+	
+	.contact_details
+	{
+		margin-bottom: 20px;
+	}
+	
+	.contact_details .span6
+	{
+		width: 50%;
+		float: left;
+	}
+	
+	.mod-search__aside .mod-search_searchword
+	{
+		width: 50%;
+	}
+	
+	.mod-login__aside .mod-login_username,
+	.mod-login__aside .mod-login_passwd
+	{
+		width: 50%;
+	}
+
+	aside
+	{
+		margin-top: 0px;
+	}
+	
+	aside .mod-search button.btn.btn-search 
+	{
+		margin-top: 0px;
+	}
+	
+	#footer
+	{
+		height: auto;
+	}
+		
+	#footer .moduletable.span3
+	{
+		float: left;
+		width: 46%;
+		padding-right: 25px;
+	}
+	
+	#footer p
+	{
+		margin-bottom: 0;
+	}
+	
+	.mod-footer
+	{
+		position: relative;
+		top: -48px;
+	}
+	
+	
+}

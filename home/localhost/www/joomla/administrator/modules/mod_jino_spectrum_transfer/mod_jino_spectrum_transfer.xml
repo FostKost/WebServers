@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.0" method="upgrade" client="administrator">
+		<name>Jino Spectrum Transfer</name>
+
+		<creationDate>2015</creationDate>
+		<author>Jino.ru</author>
+		<authorEmail>info@jino.ru</authorEmail>
+		<authorUrl>https://www.jino.ru</authorUrl>
+		<version>1.1</version>
+
+		<scriptfile>scriptfile.php</scriptfile>
+
+		<files>
+			<filename module="mod_jino_spectrum_transfer">transfer.php</filename>
+			<filename>mod_jino_spectrum_transfer.xml</filename>
+			<filename>helper.php</filename>
+			<filename>scriptfile.php</filename>
+			<filename>transfer-to-spectrum.png</filename>
+			<filename>module-content.html</filename>
+			<filename>module-content.css</filename>
+			<filename>module-content.js</filename>
+			<filename>module-content-in-process.html</filename>
+		</files>
+
+		<updateservers>
+				<server type="extension" name="Jino Update Site" priority="1">http://joomla-updates.jino.ru/mod_jino_spectrum_transfer.xml</server>
+		</updateservers>
+</extension>
