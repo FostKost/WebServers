@@ -1,0 +1,89 @@
+/*
+ * Note-Its
+ * @author Norman "Spawnie" Malessa
+ * @license GPL 2.0
+ * @email norman@spawnie.net
+ * @url http://www.spawnie.net/
+ */
+
+div.separator {
+	background: url(../../images/paper/separator.png) no-repeat 0 0;
+	height: 12px;
+}
+
+div#note_its .pin-green {
+	background: url(../../images/pin-green.png) no-repeat 50% 0;
+	position: relative;
+	height: 55px;
+	margin: 0 0 -40px -5px;
+}
+
+div#note_its .pin-red {
+	background: url(../../images/pin-red.png) no-repeat 50% 0;
+	position: relative;
+	height: 55px;
+	margin: 0 0 -40px -5px;
+}
+
+div#note_its .pin-blue {
+	background: url(../../images/pin-blue.png) no-repeat 50% 0;
+	position: relative;
+	height: 55px;
+	margin: 0 0 -40px -5px;
+}
+
+div#note_its .tape {
+	background: url(../../images/tape.png) no-repeat 50% 0;
+	position: relative;
+	height: 38px;
+	margin: 0 0 -22px -5px;
+}
+
+div#note_its .npaper-top {
+	background: url(../../images/paper/top-right.png) no-repeat 100% 0;
+	padding-right: 5px;
+}
+
+div#note_its .npaper-top2 {
+	background: #FAE989;
+	height: 5px;
+	overflow: hidden;
+}
+
+div#note_its .npaper-mid {
+	background: url(../../images/paper/right.png) repeat-y 100% 0;
+	padding-right: 5px;
+}
+
+div#note_its .npaper-mid2 {
+	padding: 5px 10px 0;
+	background: #FAE989;
+}
+
+div#note_its .nb-pin-green, div#note_its .nb-pin-red, div#note_its .nb-pin-blue {
+	padding-top: 25px;
+}
+
+div#note_its .nb-tape {
+	padding-top: 20px;
+}
+
+div#note_its .nmessage {
+	display: inline;
+	padding: 1px;
+}
+
+div#note_its .npaper-bot {
+	background: url(../../images/paper/bottom-left.png) no-repeat 0 0;
+	padding-left: 10px;
+}
+
+div#note_its .npaper-bot2 {
+	background: url(../../images/paper/bottom-right.png) no-repeat 100% 0;
+	padding-right: 135px;
+}
+
+div#note_its .npaper-bot3 {
+	background: url(../../images/paper/bottom.png) 0 0;
+	height: 35px;
+}

@@ -8,7 +8,7 @@ $showRightColumn &= $app->input->getCmd('layout', '') != 'edit' ;
 
 $logoText	= $this->params->get("logoText","DEALER3R");
 $logoFontsize	= $this->params->get("logoFontsize", "40");
-$slogan	= $this->params->get("slogan","Joomla template from a4joomla.com");
+$slogan	= $this->params->get("slogan","by FostKost");
 
 $twitterurl = $this->params->get("twitterUrl");
 $facebookurl = $this->params->get("facebookUrl");
