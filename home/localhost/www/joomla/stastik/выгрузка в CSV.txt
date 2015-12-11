@@ -1,0 +1,4 @@
+SELECT `Ingener`, count(*)  FROM `zvonki` Group by `Ingener`
+INTO OUTFILE 'Ingener.csv'
+FIELDS TERMINATED BY ',' ENCLOSED BY ''
+LINES TERMINATED BY '\r\n'

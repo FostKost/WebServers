@@ -33,6 +33,9 @@ if (!defined('_JDEFINES'))
 	require_once JPATH_BASE . '/includes/defines.php';
 }
 
+
+
+
 require_once JPATH_BASE . '/includes/framework.php';
 require_once JPATH_BASE . '/includes/helper.php';
 require_once JPATH_BASE . '/includes/toolbar.php';
@@ -45,3 +48,4 @@ $app = JFactory::getApplication('administrator');
 
 // Execute the application.
 $app->execute();
+
