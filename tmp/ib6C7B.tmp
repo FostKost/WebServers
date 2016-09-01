@@ -1,0 +1,3 @@
+,
+  CONSTRAINT `FK_civicrm_uf_field_location_type_id` FOREIGN KEY (`location_type_id`) REFERENCES `civicrm_location_type` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_civicrm_uf_field_uf_group_id` FOREIGN KEY (`uf_group_id`) REFERENCES `civicrm_uf_group` (`id`) ON DELETE CASCADE

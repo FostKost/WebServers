@@ -1,0 +1,143 @@
+1)  	/<tr>[\s,\S]*?<.{1}tr>/    выцепл€ем строку таблици
+2)	10\.52\.\d{1,3}\.\d{1,3} 	провер€ем  строку на наличие ip.≈сли он есть то запоминаем его и повтор€ем шаг 1 иначе 3
+3)	20\d{2}-\d{2}-\d{2}\s{1}\d{2}:\d{2}:\d{2} применив 2 раза  получим врем€ начала и конца событи€
+4) 	повтор€ем до конца парсинга
+
+A.size- –азмерность массива.
+A[i]- элемент массива.
+
+
+   delete link_aggregation group_id 1
+create link_aggregation group_id 1 type lacp                              
+config link_aggregation group_id 1 master_port 23 ports 20,23 state enable
+config lacp_port 1-19,21-22,24-26 mode passive
+config lacp_port 20,23 mode active
+
+ќтобразить поле запроса
+ќтображает строки 0 - 19 ( 20 всего, «апрос зан€л 0.0203 сек.)
+
+===================================================================================
+
+SELECT  `summa`.`kv` ,  `co`.`c` /  `summa`.`su` AS  `koef` 
+FROM (
+
+SELECT  `kv` , COUNT( * ) AS  `c` 
+FROM  `drop` 
+GROUP BY  `kv`
+) AS  `co` , (
+
+SELECT  `inip`.`kv` , COUNT( * ) AS  `su` 
+FROM (
+
+SELECT  `drop`.`ip` ,  `drop`.`kv` 
+FROM  `drop` 
+GROUP BY  `ip`
+) AS  `inip` 
+GROUP BY  `inip`.`kv`
+) AS  `summa` 
+WHERE  `summa`.`kv` =  `co`.`kv` 
+ORDER BY  `koef` DESC
+====================================================================================
+создание таблици событий
+INSERT INTO `event`( `kv`, `begin`, `end`,`col`) 
+SELECT  `kv` ,  `begin` ,  `end`,count(*) as `col` 
+FROM  `drop` 
+GROUP BY 
+`kv`,date(`begin`),date(`end`),
+TIME_TO_SEC(  `begin` )-TIME_TO_SEC(  `begin` ) % ( 10 *60 ),
+TIME_TO_SEC(  `end` )-TIME_TO_SEC(  `end` ) % ( 10 *60 )
+====================================================================
+рейтинг кварталов
+SELECT  `kv` , COUNT( * ) AS  `c` 
+FROM  
+
+	(
+		SELECT  `kv` ,`begin`,`end`, COUNT( * ) AS  `c`
+               FROM  `drop`
+               where `begin` between \"".$b."\"and\"".$e."\"
+               GROUP BY  `kv`,
+               UNIX_TIMESTAMP(begin)div(10*60),
+               UNIX_TIMESTAMP(`end`)div(10*60)
+               ORDER BY  `c` DESC
+	)as eve
+ 
+GROUP BY  `kv` 
+ORDER BY  `c` DESC 
+
+=================================================================================
+рейтинг листьев деревьев
+select `drop`.`ip`, count(*) as `c`
+from `drop`, `event`
+where  `drop`.`begin` BETWEEN `event`.`begin`-'00:00:02' and `event`.`begin`+'00:00:02' and
+`event`.`col`='1'
+group by `drop`.`ip`
+order by `c` desc
+
+===================================================================
+ $query = "SELECT  `kv` , COUNT( * ) AS  `c` FROM
+	(SELECT  `kv` , COUNT( * ) AS  `c` FROM
+               `drop`WHERE `begin` BETWEEN  \"".$b."\" AND  \"".$e."\"
+               GROUP BY  `kv` ORDER BY  `c` DESC);"
+
+
+
+
+
+
+
+
+
+
+
+
+=================================================================
+рейтинг комутаторов.
+SELECT  `ip` , COUNT( * ) AS  'c'
+FROM  `drop` 
+WHERE kv =74
+GROUP BY  `ip` 
+ORDER BY  `c` DESC 
+LIMIT 0 , 30
+
+
+
+
+if ($_POST['n1']=='2'){
+           {echo "<div class=\"\">\n";
+            echo "<form  method=\"POST\" class=\"form-search\"  >";
+            echo "<div class=\"radiobut\">\n";
+            echo "<input type=\"radio\" name=\"n1\" value=\"1\"  />ѕо количеству тригеров ";
+            echo "<input type=\"radio\" name=\"n1\" value=\"2\" checked />ѕо количеству сгрупированных событий";
+            echo "</div class=\"radiobut\">\n";
+
+            echo "<input class=\"submit1 btn btn-inverse\" type=\"submit\" name=\"pars\" value=\"ок\">";
+
+            echo "</div class=\"radiobut\">\n";
+            echo "</form>";}
+         }else
+         {echo "<div class=\"form1\">\n";
+          echo "<form  method=\"POST\" class=\"form-search\"  >";
+          echo "<div class=\"radiobut\">\n";
+          echo "<input type=\"radio\" name=\"n1\" value=\"1\" checked />ѕо количеству тригеров ";
+          echo "<input type=\"radio\" name=\"n1\" value=\"2\"  />ѕо количеству сгрупированных событий";
+          echo "</div class=\"radiobut\">\n";
+
+          echo "<input class=\"submit1 btn btn-inverse\" type=\"submit\" name=\"pars\" value=\"ок\">";
+
+          echo "</div class=\"radiobut\">\n";
+          echo "</form>";}
+
+
+
+++++++++++++++++++++++++++++++++++++++
+относительные
+
+select `dr`.`kv`,`dr`.`c`/cou.c as c from
+(SELECT  `kv` , COUNT( * ) AS  `c` FROM `drop`
+WHERE `begin` BETWEEN  \"".$b."\"and\"".$e."\"
+               GROUP BY  `kv`)as `dr`,
+(select COUNT(DISTINCT ip)as c ,kv 
+ from `drop`
+ group by `kv`)as `cou`
+where cou.kv=dr.kv
+ORDER BY  `c` DESC
