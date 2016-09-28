@@ -1,0 +1,44 @@
+ create vlan 503 tag 503
+ config vlan 503 add tagged 23-24
+ create erps raps_vlan 503
+ config erps raps_vlan 503 timer holdoff_time 0 guard_time 500 wtr_time 5 
+ config erps raps_vlan 503 rpl_port east 
+ config erps raps_vlan 503 rpl_owner enable 
+ config erps raps_vlan 503 ring_mel 1 
+ config erps raps_vlan 503 revertive mode enable 
+ config erps raps_vlan 503 ring_port west 25
+ config erps raps_vlan 503 ring_port east 26
+ config erps raps_vlan 503 protected_vlan add vlanid 1-502
+ config erps raps_vlan 503 protected_vlan add vlanid 504-4094
+ config erps raps_vlan 503 state enable
+ enable erps
+ config erps log enable 
+ config erps trap disable 
+ 
+ 
+ create vlan 506 tag 506
+ config vlan 506 add tagged 23-24
+ create erps raps_vlan 506
+ config erps raps_vlan 506 timer holdoff_time 0 guard_time 500 wtr_time 5 
+ config erps raps_vlan 506 rpl_port none 
+ config erps raps_vlan 506 rpl_owner disable 
+ config erps raps_vlan 506 ring_mel 1 
+ config erps raps_vlan 506 revertive mode enable 
+ config erps raps_vlan 506 ring_port west 24
+ config erps raps_vlan 506 ring_port east 23
+ config erps raps_vlan 506 protected_vlan add vlanid 1-505
+ config erps raps_vlan 506 protected_vlan add vlanid 507-4094
+ config erps raps_vlan 506 state enable
+ enable erps
+ config erps log enable 
+ config erps trap disable 
+ 
+config vlan default add tagged 3
+config vlan 78 add tagged 3
+config vlan 80 add tagged 3
+config vlan 116 add tagged 3
+config vlan 216 add tagged 3
+config vlan 916 add tagged 3
+config vlan VLAN3116 add tagged 3
+config vlan 4032 add tagged 3
+config vlan 4033 add tagged 3

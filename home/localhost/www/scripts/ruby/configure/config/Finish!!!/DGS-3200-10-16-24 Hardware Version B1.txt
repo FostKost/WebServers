@@ -1,0 +1,80 @@
+DGS-3200-10-16-24 Hardware Version B1 оттестировано на Firmware: Build 2.21.B008
+=======================================================================================
+//Блокирование NETBIOS-TCP на всех портах коммутатора в vlan физ.лиц
+create access_profile profile_id 2 ip vlan tcp dst_port_mask 0xFFFF                                                                             
+config access_profile profile_id 2 add access_id 5 ip vlan 4013 tcp dst_port 42  port 1-10 deny                                                 
+config access_profile profile_id 2 add access_id 10 ip vlan 4013 tcp dst_port 135  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 15 ip vlan 4013 tcp dst_port 136  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 20 ip vlan 4013 tcp dst_port 137  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 25 ip vlan 4013 tcp dst_port 138  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 30 ip vlan 4013 tcp dst_port 139  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 35 ip vlan 4013 tcp dst_port 445  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 40 ip vlan 4013 tcp dst_port 1900  port 1-10 deny                                              
+//Блокирование NETBIOS-UDP на всех портах коммутатора в vlan физ.лиц
+create access_profile profile_id 3 ip vlan udp dst_port_mask 0xFFFF                                                                             
+config access_profile profile_id 3 add access_id 45 ip vlan 4013 udp dst_port 42  port 1-10 deny                                                
+config access_profile profile_id 3 add access_id 50 ip vlan 4013 udp dst_port 135  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 55 ip vlan 4013 udp dst_port 136  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 60 ip vlan 4013 udp dst_port 137  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 65 ip vlan 4013 udp dst_port 138  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 70 ip vlan 4013 udp dst_port 139  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 75 ip vlan 4013 udp dst_port 1900  port 1-10 deny                                              
+config access_profile profile_id 3 add access_id 80 ip vlan 4013 udp dst_port 5355  port 1-10 deny                                              
+//Блокирование мультикаст трафика в vlan физ. лиц
+create access_profile profile_id 4 ip vlan destination_ip_mask 255.0.0.0                                                                        
+config access_profile profile_id 4 add access_id 5 ip vlan 4013 destination_ip 224.0.0.0  port 1-10 deny                                        
+//Сеть управления коммутаторами
+create access_profile profile_id 5 ip source_ip_mask 255.255.0.0                                                                                
+config access_profile profile_id 5 add access_id 5 ip source_ip 10.52.0.0  port 1-10 permit priority 7 replace_priority rx_rate no_limit        
+//Ип офисного GW для доступа на телефонные шлюзы по web
+create access_profile profile_id 6 ip source_ip_mask 255.255.255.255 destination_ip_mask 255.255.255.255                                        
+config access_profile profile_id 6 add access_id 5 ip source_ip 79.140.16.8  port 1-10 permit priority 7 replace_priority rx_rate no_limit      
+config access_profile profile_id 6 add access_id 10 ip destination_ip 79.140.16.8  port 1-10 permit priority 7 replace_priority rx_rate no_limit
+//Сеть для телефонных шлюзов в vlan(диапазон 200-299) юр. лиц 
+create access_profile profile_id 7 ip source_ip_mask 255.255.0.0 destination_ip_mask 255.255.0.0                                                
+config access_profile profile_id 7 add access_id 5 ip source_ip 10.195.0.0  port 1-10 permit priority 5 replace_priority rx_rate no_limit       
+config access_profile profile_id 7 add access_id 10 ip destination_ip 10.195.0.0  port 1-10 permit priority 5 replace_priority rx_rate no_limit 
+//Подсеть si3000 (телефония)
+create access_profile profile_id 8 ip source_ip_mask 255.255.255.0 destination_ip_mask 255.255.255.0                                            
+config access_profile profile_id 8 add access_id 5 ip source_ip 10.73.8.0  port 1-10 permit priority 5 replace_priority rx_rate no_limit        
+config access_profile profile_id 8 add access_id 10 ip destination_ip 10.73.8.0  port 1-10 permit priority 5 replace_priority rx_rate no_limit  
+//RTU (телефония)
+create access_profile profile_id 9 ip source_ip_mask 255.255.255.255 destination_ip_mask 255.255.255.255                                        
+config access_profile profile_id 9 add access_id 5 ip source_ip 10.1.56.42  port 1-10 permit priority 5 replace_priority rx_rate no_limit       
+config access_profile profile_id 9 add access_id 10 ip destination_ip 10.1.56.42  port 1-10 permit priority 5 replace_priority rx_rate no_limit 
+//Подсеть в vlan физ. лиц
+create access_profile profile_id 10 ip source_ip_mask 255.252.0.255 destination_ip_mask 255.252.0.255                                           
+config access_profile profile_id 10 add access_id 5 ip source_ip 10.196.0.1  port 1-10 permit priority 2 replace_priority rx_rate no_limit      
+config access_profile profile_id 10 add access_id 10 ip destination_ip 10.196.0.1  port 1-10 permit priority 2 replace_priority rx_rate no_limit
+//Подсеть в vlan юр. лиц
+create access_profile profile_id 11 ip source_ip_mask 255.252.0.255 destination_ip_mask 255.252.0.255                                           
+config access_profile profile_id 11 add access_id 5 ip source_ip 10.64.0.1  port 1-10 permit priority 2 replace_priority rx_rate no_limit       
+config access_profile profile_id 11 add access_id 10 ip destination_ip 10.64.0.1  port 1-10 permit priority 2 replace_priority rx_rate no_limit 
+//Подсеть в vlan физ. лиц с отрицательным балансом
+create access_profile profile_id 12 ip source_ip_mask 255.252.0.255 destination_ip_mask 255.252.0.255                                           
+config access_profile profile_id 12 add access_id 5 ip source_ip 10.204.0.1  port 1-10 permit priority 2 replace_priority rx_rate no_limit      
+config access_profile profile_id 12 add access_id 10 ip destination_ip 10.204.0.1  port 1-10 permit priority 2 replace_priority rx_rate no_limit
+//Подсеть DHCP relay
+create access_profile profile_id 13 ip source_ip_mask 255.224.0.255 destination_ip_mask 255.224.0.255                                           
+config access_profile profile_id 13 add access_id 5 ip source_ip 10.8.0.1  port 1-10 permit priority 0 replace_priority rx_rate no_limit        
+config access_profile profile_id 13 add access_id 10 ip destination_ip 10.8.0.1  port 1-10 permit priority 0 replace_priority rx_rate no_limit  
+//Подсеть DRS серверов
+create access_profile profile_id 14 ip source_ip_mask 255.255.255.0 destination_ip_mask 255.255.255.0                                           
+config access_profile profile_id 14 add access_id 5 ip destination_ip 10.9.0.0  port 1-10 permit priority 0 replace_priority rx_rate no_limit   
+config access_profile profile_id 14 add access_id 10 ip source_ip 10.9.0.0  port 1-10 permit priority 0 replace_priority rx_rate no_limit       
+create access_profile profile_id 15 ip udp dst_port_mask 0xFFFF                                                                                 
+config access_profile profile_id 15 add access_id 5 ip udp dst_port 53  port 1-10 permit priority 2 replace_priority rx_rate no_limit           
+config access_profile profile_id 15 add access_id 10 ip udp dst_port 67  port 1-10 permit priority 2 replace_priority rx_rate no_limit          
+//Запрет левых dhcp
+create access_profile profile_id 16 ip vlan udp dst_port_mask 0xFFFF                                                                            
+config access_profile profile_id 16 add access_id 5 ip vlan 4012 udp dst_port 68  port 1-10 deny                                                
+config access_profile profile_id 16 add access_id 10 ip vlan 4013 udp dst_port 68  port 1-10 deny                                               
+config access_profile profile_id 16 add access_id 15 ip vlan 3106 udp dst_port 68  port 1-10 deny                                               
+//Разрешить ARP и PPPOE для всех
+create access_profile profile_id 17 ethernet vlan ethernet_type                                                                                 
+config access_profile profile_id 17 add access_id 5 ethernet ethernet_type 0x806  port 1-10 permit rx_rate no_limit                             
+config access_profile profile_id 17 add access_id 10 ethernet ethernet_type 0x8863  port 1-10 permit rx_rate no_limit                           
+config access_profile profile_id 17 add access_id 15 ethernet ethernet_type 0x8864  port 1-10 permit rx_rate no_limit                           
+//Запретить все остальное для физ.лиц без ЛБВ(локал без впн) и юр.лиц
+config access_profile profile_id 17 add access_id 20 ethernet vlan 3106  port 1-10 deny                                                         
+config access_profile profile_id 17 add access_id 25 ethernet vlan 4012  port 1-10 deny                                                         

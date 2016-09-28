@@ -1,0 +1,659 @@
+ 
+#-------------------------------------------------------------------------------
+#                      DGS-3627G Gigabit Ethernet Switch
+#                                Configuration
+#
+#                           Firmware: Build 2.84.B18
+#           Copyright(C) 2010 D-Link Corporation. All rights reserved.
+#-------------------------------------------------------------------------------
+ 
+
+# STACK
+
+config stacking force_master_role state disable
+
+# DOUBLE_VLAN
+
+disable double_vlan
+
+# BASIC
+
+
+# PASSWORD ENCRYPTION
+enable password encryption 
+config serial_port auto_logout 10_minutes
+enable telnet 23
+enable web 80
+enable clipaging
+enable password_recovery
+
+# DEBUG
+
+debug config state disable
+debug config error_reboot enable
+
+
+# VLAN
+
+enable pvid auto_assign
+config vlan default delete 1-27
+config vlan default add untagged 27
+create vlan 76 tag 76
+config vlan 76 add tagged 1-2,21-24
+create vlan 167 tag 167
+config vlan 167 add tagged 1-2,21-24
+create vlan 267 tag 267
+config vlan 267 add tagged 1-2,21-24
+create vlan 967 tag 967
+config vlan 967 add tagged 1-2,21-24
+create vlan 3167 tag 3167
+config vlan 3167 add tagged 1-2,21-24
+create vlan 3962 tag 3962
+config vlan 3962 add tagged 1-2,21-24
+create vlan 3963 tag 3963
+config vlan 3963 add tagged 1-2,21-24
+disable qinq
+disable gvrp
+disable vlan_trunk
+config gvrp  1-2,21-24 state disable ingress_checking enable acceptable_frame admit_all pvid 1
+
+# IP
+
+config ipif_mac_mapping ipif System mac_offset 0
+config ipif System ipaddress 10.52.211.2/24 vlan 167
+config ipif System proxy_arp disable local disable
+config ipif System ip_mtu 1500
+config ipif System dhcpv6_client disable
+config ipif System  ip_directed_broadcast  disable
+disable autoconfig 
+
+# ROUTE
+
+config route preference static 60
+config route preference default 1
+config route preference rip 100
+config route preference ospfIntra 80
+config route preference ospfInter 90
+config route preference ospfExt1 110
+config route preference ospfExt2 115
+config route preference ebgp 70
+config route preference ibgp 130
+create iproute default 10.52.211.1 1 primary
+config ecmp algorithm ip_destination   crc_low   
+enable ecmp ospf
+
+# PROUTE
+
+# STORM
+
+config traffic control auto_recover_time 0
+config traffic trap both
+config traffic control 1-2,21-24 broadcast enable multicast enable unicast disable action drop threshold 4096 countdown 0 time_interval 5
+config traffic control 3-20 broadcast enable multicast enable unicast disable action drop threshold 128 countdown 0 time_interval 5
+config traffic control 25-27 broadcast disable multicast disable unicast disable action drop threshold 131072 countdown 0 time_interval 5
+
+# PORT_LOCK
+
+config port_security ports 1-27 admin_state disable max_learning_addr 1 lock_address_mode DeleteOnTimeout
+
+# LOOP_DETECT
+
+enable loopdetect
+
+# MANAGEMENT
+
+create trusted_host network 194.0.68.8/255.255.255.255
+create trusted_host network 79.140.16.7/255.255.255.255
+create trusted_host network 79.140.16.8/255.255.255.255
+create trusted_host network 81.30.199.70/255.255.255.255
+create trusted_host network 79.140.28.4/255.255.255.255
+create trusted_host network 10.52.211.0/255.255.255.0
+create trusted_host network 10.1.51.0/255.255.255.224
+enable snmp traps 
+enable snmp authenticate_traps 
+enable snmp
+enable snmp linkchange_traps 
+config snmp system_name
+config snmp system_location Vysotnaya 2
+enable rmon 
+config snmp linkchange_traps ports 1-27 enable
+
+# QOS
+
+config bandwidth_control 1-27 rx_rate no_limit tx_rate no_limit
+enable hol_prevention
+config 802.1p default_priority 1-26 1
+config 802.1p default_priority 27 0
+config per_queue bandwidth_control ports 1-27 0 min_rate  no_limit  max_rate no_limit
+config per_queue bandwidth_control ports 1-27 1 min_rate  no_limit  max_rate no_limit
+config per_queue bandwidth_control ports 1-27 2 min_rate  no_limit  max_rate no_limit
+config per_queue bandwidth_control ports 1-27 3 min_rate  no_limit  max_rate no_limit
+config per_queue bandwidth_control ports 1-27 4 min_rate  no_limit  max_rate no_limit
+config per_queue bandwidth_control ports 1-27 5 min_rate  no_limit  max_rate no_limit
+config per_queue bandwidth_control ports 1-27 6 min_rate  no_limit  max_rate no_limit
+config scheduling_mechanism ports 1-26 weight_fair
+config scheduling ports 1-27 0  max_packet  1
+config scheduling ports 1-26 1  max_packet  12
+config scheduling ports 1-26 2  max_packet  14
+config scheduling ports 1-26 3  max_packet  14
+config scheduling ports 1-26 4  max_packet  0
+config scheduling ports 1-26 5  max_packet  0
+config scheduling ports 1-26 6  max_packet  15
+config 802.1p user_priority ports 1-26 0  1
+config 802.1p user_priority ports 1-27 1  0
+config 802.1p user_priority ports 1-26 2  2
+config 802.1p user_priority ports 1-27 3  3
+config 802.1p user_priority ports 1-27 4  4
+config 802.1p user_priority ports 1-27 5  5
+config 802.1p user_priority ports 1-27 6  6
+config 802.1p user_priority ports 1-27 7  6
+config scheduling_mechanism ports 27 strict
+config scheduling ports 27 1  max_packet  2
+config scheduling ports 27 2  max_packet  3
+config scheduling ports 27 3  max_packet  4
+config scheduling ports 27 4  max_packet  5
+config scheduling ports 27 5  max_packet  6
+config scheduling ports 27 6  max_packet  7
+config 802.1p user_priority ports 27 0  2
+config 802.1p user_priority ports 27 2  1
+
+# TRAF-SEGMENTATION
+
+config traffic_segmentation 1-20 forward_list 21-26
+config traffic_segmentation 21-26 forward_list 1-26
+config traffic_segmentation 27 forward_list all
+
+# ERPS
+
+disable erps
+config erps log disable 
+config erps trap disable 
+
+# LLDP
+
+enable lldp
+config lldp message_tx_interval 30
+config lldp tx_delay 2
+config lldp message_tx_hold_multiplier 4
+config lldp reinit_delay 2
+config lldp notification_interval 5
+config lldp ports 1-27 notification disable
+config lldp ports 1-2,21-26 admin_status tx_and_rx
+config lldp ports 3-20,27 admin_status rx_only
+config lldp ports 1-26 mgt_addr ipv4 10.52.211.2 enable
+
+# ACL
+
+create access_profile profile_id 6 ip udp dst_port_mask 0xFFFF 
+config access_profile profile_id 6 add access_id 1 ip udp dst_port 53  port 1-26 permit priority 2 replace_priority rx_rate no_limit 
+config access_profile profile_id 6 add access_id 30 ip udp dst_port 67  port 1-26 permit priority 2 replace_priority rx_rate no_limit
+config access_profile profile_id 3 add access_id auto_assign ip source_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority 
+config access_profile profile_id 3 add access_id auto_assign ip destination_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority  
+disable cpu_interface_filtering 
+
+# SNTP
+
+enable sntp
+config time_zone operator + hour 5 min 0
+config sntp primary 81.30.199.66 secondary 81.30.199.34 poll-interval 600
+config dst disable
+
+# LACP
+
+config link_aggregation algorithm ip_source_dest
+
+# GM
+
+config sim candidate
+disable sim
+config sim dp_interval 30
+config sim hold_time 100
+
+# GM_H
+
+
+# SYSLOG
+
+enable syslog
+config system_severity log information
+config system_severity trap information
+create syslog host 1 severity all facility local3 udp_port 514 ipaddress 10.0.5.126 state enable 
+config log_save_timing on_demand
+
+# MIRROR
+
+disable mirror
+
+# SSL
+
+disable ssl 
+enable ssl ciphersuite RSA_with_RC4_128_MD5 
+enable ssl ciphersuite RSA_with_3DES_EDE_CBC_SHA 
+enable ssl ciphersuite DHE_DSS_with_3DES_EDE_CBC_SHA 
+enable ssl ciphersuite RSA_EXPORT_with_RC4_40_MD5 
+config ssl cachetimeout 600 
+
+# PORT
+
+disable jumbo_frame
+config jumbo_frame ports 1-27 state enable
+config ports 1-20 speed auto capability_advertised 1000_full flow_control disable learning enable state enable
+config ports 21-24 medium_type copper speed auto capability_advertised 10_half 10_full 100_half 100_full 1000_full flow_control disable learning enable state enable
+config ports 21-24 medium_type fiber speed auto capability_advertised 1000_full flow_control disable learning enable state enable
+config ports 25-27 speed auto  flow_control disable learning enable state enable
+
+# OAM
+
+
+# DDM
+
+config ddm trap enable
+config ddm log enable
+config ddm ports 1-8,11-20 state enable shutdown alarm
+config ddm ports 9-10,21-24 state enable shutdown none
+
+# SNMPv3
+
+delete snmp community public
+delete snmp community private
+delete snmp user initial
+delete snmp group initial
+delete snmp group ReadGroup
+delete snmp group WriteGroup
+delete snmp view restricted all
+delete snmp view CommunityView all
+config snmp engineID 800000ab03001346e27b4b
+create snmp view RMONView 1.0.8802 view_type included
+create snmp view RMONView 1.3.6.1 view_type included
+create snmp view CommunityView 1.0.8802 view_type included
+create snmp view CommunityView 1.3.6.1 view_type included
+create snmp group public v1 read_view CommunityView notify_view CommunityView 
+create snmp group public v2c read_view CommunityView notify_view CommunityView 
+create snmp group private v1 read_view CommunityView write_view CommunityView notify_view CommunityView 
+create snmp group private v2c read_view CommunityView write_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052 v1 read_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052 v2c read_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052_OpI706 v1 read_view RMONView write_view RMONView notify_view RMONView 
+create snmp group NotImaR3052_OpI706 v2c read_view RMONView write_view RMONView notify_view RMONView 
+create snmp community NotImaR3052 view CommunityView read_only
+create snmp community NotImaR3052_OpI706 view RMONView read_write
+create snmp host 79.140.16.7 v1  NotImaR3052 
+create snmp host 79.140.16.7 v1  NotImaR3052_OpI706 
+create snmp host 92.50.166.102 v1  NotImaR3052_OpI706 
+disable community_encryption
+
+# PROTOCOL_VLAN
+
+
+# QINQ
+
+
+# SUBNETVLAN
+
+config vlan_precedence port 1-27 mac_based_vlan 
+
+# SUPERVLAN
+
+
+# RSPAN
+
+disable rspan
+
+# MEF
+
+
+# 8021X
+
+disable 802.1x
+config 802.1x auth_mode port_based
+config 802.1x auth_protocol radius_eap
+config 802.1x fwd_pdu system disable
+config 802.1x max_users 4000
+config 802.1x authorization network radius  enable
+config 802.1x capability ports 1-27 none
+config 802.1x auth_parameter ports 1-27 direction both port_control auto quiet_period 60 tx_period 30 supp_timeout 30 server_timeout 30 max_req 2 reauth_period 3600 enable_reauth disable 
+config 802.1x auth_parameter ports 1-27 max_users 16 
+
+# guestvlan
+
+
+# TR
+
+
+# NLB
+
+
+# LIMITED_MULTICAST_RANGE
+
+
+# MULTICAST_VLAN
+
+
+# FDB
+
+config fdb aging_time 300
+
+# ADDRBIND
+
+config address_binding ip_mac ports 1-27 forward_dhcppkt enable
+disable address_binding dhcp_snoop
+disable address_binding dhcp_snoop ipv6
+disable address_binding nd_snoop
+disable address_binding trap_log
+config address_binding dhcp_snoop max_entry ports 1-27 limit no_limit
+
+# DHCPV6_SNOOPING
+
+
+# ND_SNOOPING
+
+
+# DhcpServerScreening
+
+config filter dhcp_server port all state disable
+config filter dhcp_server illegal_server_log_suppress_duration 5min
+config filter dhcp_server trap_log disable
+
+# ARPSpoofingPrevention
+
+
+# MAC_ADDRESS_TABLE_NOTIFICATION
+
+enable mac_notification
+config mac_notification interval 1 historysize 1
+config mac_notification ports 1-27 disable
+
+# STP
+
+config stp version rstp
+config stp maxage 20 maxhops 20 forwarddelay 15 txholdcount 6 fbpdu disable hellotime 2 lbd enable lbd_recover_timer 60 nni_bpdu_addr dot1ad
+config stp priority 40960 instance_id 0 
+config stp mst_config_id name 00:22:B0:14:BE:00 revision_level 0
+disable stp
+config stp ports 1-26 externalCost 100  edge false p2p false state disable restricted_role false restricted_tcn false lbd disable
+config stp mst_ports 1-27 instance_id 0 internalCost auto priority 128
+config stp ports 1-26 fbpdu enable
+config stp ports 27 externalCost auto  edge false p2p auto state enable restricted_role false restricted_tcn false lbd disable
+config stp ports 27 fbpdu disable
+
+# BPDU_TUNNEL
+
+config bpdu_tunnel ports all type none
+disable bpdu_tunnel
+
+# BPDU_PROTECTION
+
+config bpdu_protection ports 1-27 mode shutdown
+
+# SAFEGUARD_ENGINE
+
+config safeguard_engine state disable utilization rising 30 falling 20 trap_log disable mode fuzzy
+
+# BANNER_PROMP
+
+config command_prompt default
+config greeting_message default
+
+# SSH
+
+ config ssh algorithm 3DES enable
+ config ssh algorithm AES128 enable
+ config ssh algorithm AES192 enable
+ config ssh algorithm AES256 enable
+ config ssh algorithm arcfour enable
+ config ssh algorithm blowfish enable
+ config ssh algorithm cast128 enable
+ config ssh algorithm twofish128 enable
+ config ssh algorithm twofish192 enable
+ config ssh algorithm twofish256 enable
+ config ssh algorithm MD5 enable
+ config ssh algorithm SHA1 enable
+ config ssh algorithm RSA enable
+ config ssh algorithm DSA enable
+ config ssh authmode password enable
+ config ssh authmode publickey enable
+ config ssh authmode hostbased enable
+ config ssh server maxsession 8
+ config ssh server contimeout 120
+ config ssh server authfail 2
+ config ssh server rekey never
+ config ssh server port 22
+ disable ssh
+
+# SERVER_PROFILE
+
+
+# DNSRESOLVER
+
+disable dns_resolver
+config name_server timeout 3
+
+# CMDLOG
+
+enable command logging
+
+# BCPING
+
+enable broadcast_ping_reply
+
+# ip_tunnel
+
+
+# VOICEVLAN
+
+# DHCP_SERVER
+
+config dhcp ping_packets 2 
+config dhcp ping_timeout 500 
+disable dhcp_server
+
+# WAC
+
+config wac switch_http_port 80
+config wac method local
+config wac authorization attributes local enable
+config wac authorization attributes radius enable
+disable wac
+config wac ports 1-27 aging_time 1440 idle_time infinite block_time 60
+
+# JWAC
+
+config jwac switch_http_port 80
+config jwac clear_quarantine_server_url
+config jwac radius_protocol pap
+disable jwac quarantine_server_monitor
+config jwac quarantine_server_error_timeout 30
+enable jwac forcible_logout
+enable jwac udp_filtering
+enable jwac redirect
+config jwac redirect destination quarantine_server delay_time 1
+disable jwac
+config jwac authenticate_page english
+config jwac authorization attributes radius enable
+config jwac authorization attributes local enable
+config jwac ports 1-27 auth_mode host_based max_authenticating_host 50 aging_time 1440 idle_time infinite block_time 60
+
+# CFM
+
+
+# SFLOW
+
+
+# MBA
+
+disable mac_based_access_control
+config mac_based_access_control authorization network radius enable local enable
+config mac_based_access_control ports 1-27 state disable
+config mac_based_access_control method local
+config mac_based_access_control password default
+config mac_based_access_control max_users 128
+
+# MCFILTER
+
+
+# COMPOUND_AUTHENTICATION
+
+config authentication ports 1-27 auth_mode host_based
+config authentication ports 1-27 multi_authen_methods none
+enable authorization attributes
+config authentication server failover block
+
+# SNOOP
+
+config limited_multicast_addr ports 1-27 state disable 
+
+# MLDSNP
+
+
+# ACCESS_AUTHENTICATION_CONTROL
+
+create authen server_host 10.0.5.126 protocol radius port 1812 key "8kJuk45oM" timeout 5 retransmit 2
+config authen server_group radius delete server_host 10.0.5.126 protocol radius
+config authen server_group radius add server_host 10.0.5.126 protocol radius
+config authen_login default method radius local
+config authen_enable default method  radius local_enable
+config authen application console login default
+config authen application console enable default
+config authen application telnet login default
+config authen application telnet enable default
+config authen application ssh login default
+config authen application ssh enable default
+config authen application http login default
+config authen application http enable default
+config authen parameter response_timeout 30
+config authen parameter attempt 3
+enable authen_policy
+config accounting service network state disable
+config accounting service shell state disable
+config accounting service system state disable
+
+# AAA_LOCAL_ENABLE_PASSWORD
+
+# AAA ADMIN PWD LIST
+config admin local_enable
+
+merel1634d
+merel1634d
+# AAA ADMIN PWD END
+
+# NDP
+
+config ipv6 nd ns ipif System retrans_time 0
+config ipv6 nd ra ipif System state disable life_time 1800 reachable_time 1200000 retrans_time 0 hop_limit 64 managed_flag disable other_config_flag disable min_rtr_adv_interval 198 max_rtr_adv_interval 600
+
+# RIPng
+
+disable ripng
+config ripng method split_horizon
+config ripng update 30
+config ripng expire 180
+config ripng garbage_collection 120
+config ripng ipif System state disable metric 1
+
+# ARP
+
+config arp_aging time 20
+config gratuitous_arp send ipif_status_up disable
+config gratuitous_arp send dup_ip_detected disable
+config gratuitous_arp learning disable
+
+# ROUTEFILTER
+
+# RELAY6
+
+config dhcpv6_relay hop_count  4 
+disable dhcpv6_relay 
+
+# DHCPv6_SERVER
+
+disable dhcpv6_server
+config dhcpv6_server ipif System state enable
+
+# IGMP
+
+config igmp ipif System version 3 query_interval 125 max_response_time 10 robustness_variable 2 state disable
+config igmp ipif System last_member_query_interval 1  
+config igmp check_subscriber_source_network ipif System enable  
+
+# PIMSM
+
+disable pim
+config pim cbsr hash_masklen 30
+config pim cbsr bootstrap_period 60
+config pim register_suppression_time 60
+config pim register_probe_time 5
+config pim last_hop_spt_switchover never
+config pim crp holdtime 150 priority 192 
+config pim crp wildcard_prefix_cnt 0
+config pim ipif System state disable hello 30 jp_interval 60 mode dm dr_priority 1 
+config pim cbsr ipif System priority -1
+config pim-ssm state disable group_range 232.0.0.0/8
+
+# DVMRP
+
+disable dvmrp
+config dvmrp ipif System metric 1 probe 10 neighbor_timeout 35 state disable 
+
+# IPMROUTE
+
+
+# RIP
+
+disable rip
+config rip ipif System tx_mode disable state disable
+config rip ipif System rx_mode disable state disable 
+
+# MD5
+
+
+# OSPF
+
+config ospf ipif System area 0.0.0.0 priority 1 hello_interval 10 dead_interval 40
+config ospf ipif System authentication none metric 1 state disable passive disable
+config ospf router_id 0.0.0.0
+disable ospf
+
+# BGP
+
+
+# OSPFv3
+
+config ospfv3 router_id 0.0.0.0
+disable ospfv3
+
+# DNSR
+
+disable dnsr
+config dnsr primary nameserver 0.0.0.0
+config dnsr secondary nameserver 0.0.0.0
+disable dnsr cache
+disable dnsr static
+
+# MLD
+
+config mld ipif System query_interval 125 max_response_time 10 robustness_variable 2 last_listener_query_interval 1 version 2 state disable 
+
+# DHCP_RELAY
+
+disable dhcp_relay
+config dhcp_relay hops 4 time 0 
+config dhcp_relay option_82 state disable
+config dhcp_relay option_82 check disable
+config dhcp_relay option_82 policy replace
+config dhcp_relay option_60 state disable
+config dhcp_relay option_61 state disable
+config dhcp_relay option_60 default mode drop
+config dhcp_relay option_61 default drop
+disable dhcp_local_relay
+
+# VRRP
+
+config vrrp ipif System authtype none
+disable vrrp
+
+disable vrrp ping
+
+
+#-------------------------------------------------------------------
+#             End of configuration file for DGS-3627G
+#-------------------------------------------------------------------

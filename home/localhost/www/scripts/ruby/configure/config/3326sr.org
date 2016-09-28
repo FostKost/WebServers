@@ -1,0 +1,173 @@
+#-------------------------------------------------------------------
+#                       DES-3326SR Configuration
+#
+#                       Firmware: Build 4.03-B13
+#        Copyright(C) 2000-2006 D-Link Corporation. All rights reserved.
+#-------------------------------------------------------------------
+
+
+# BASIC
+config serial_port baud_rate 9600 auto_logout 10_minutes
+enable telnet 23
+enable web 80
+
+# ACCOUNT LIST
+create account admin root
+3526ornet
+3526ornet
+# ACCOUNT END
+
+# VLAN
+
+config vlan default delete 1-26
+create vlan 79 tag 79
+config vlan 79 add tagged 1 
+create vlan 129 tag 129
+config vlan 129 add tagged 1
+create vlan 229 tag 229
+config vlan 229 add tagged 1
+create vlan 929 tag 929
+config vlan 929 add tagged 1
+create vlan 4056 tag 4056
+config vlan 4056 add tagged 1
+create vlan 4057 tag 4057
+config vlan 4057 add tagged 1
+config vlan 4057 add untagged 2-26
+disable gvrp
+config gvrp 2-26 state disable ingress_checking enable acceptable_frame admit_all pvid 4057
+config gvrp 1 state disable ingress_checking enable acceptable_frame admit_all pvid 1
+
+# IP
+
+config ipif System vlan 129 ipaddress 10.52.179.93/26 state enable
+
+# ROUTE
+
+create iproute default 10.52.179.65 1
+
+# MANAGEMENT
+
+create trusted_host 81.30.199.70
+create trusted_host 79.140.16.7
+create trusted_host 79.140.16.8
+enable snmp traps 
+enable snmp authenticate traps 
+config snmp system_name DR3E158000101(S5026)
+config snmp system_location Centralnaya 23 p7 
+config snmp system_contact OAO 'Ufanet' tel/fax. 8/3532/43-03-03
+enable rmon 
+
+# STORM
+
+config traffic control 1-26 broadcast disable multicast disable dlf disable threshold 128
+
+# STP
+
+config stp maxage 20 hellotime 2 forwarddelay 15 priority 32768 version rstp txholdcount 3 fbpdu enable
+disable stp
+config stp ports 1-26 cost auto priority 128 edge false p2p auto state enable
+
+# QOS
+
+config scheduling 0 max_packet 0 max_latency 0
+config scheduling 1 max_packet 0 max_latency 0
+config scheduling 2 max_packet 0 max_latency 0
+config scheduling 3 max_packet 0 max_latency 0
+config 802.1p user_priority 0  1
+config 802.1p user_priority 1  0
+config 802.1p user_priority 2  0
+config 802.1p user_priority 3  1
+config 802.1p user_priority 4  2
+config 802.1p user_priority 5  2
+config 802.1p user_priority 6  3
+config 802.1p user_priority 7  3
+config 802.1p default_priority 1-26 0
+config bandwidth_control 1-26 rx_rate no_limit tx_rate no_limit
+
+
+# TRAF-SEGMENTATION
+
+config traffic_segmentation 1 forward_list 1-26
+config traffic_segmentation 2-26 forward_list 1
+
+# PORT_LOCK
+
+config port_security ports 1 admin_state disable max_learning_addr 1 lock_address_mode DeleteOnTimeout
+config port_security ports 2-26 admin_state enable max_learning_addr 1 lock_address_mode DeleteOnTimeout
+
+#----------------------------------------------------------------------------------------
+
+# SYSLOG
+
+enable syslog
+create syslog host 2 ipaddress 10.0.5.126 severity all facility local3 udp_port 514 state enable
+# MIRROR
+disable mirrorconfig mirror port 1 add source ports  rxconfig mirror port 1 add source ports  tx
+# STACK
+# PORT
+config ports 1-26 speed auto flow_control disable learning enable state enable
+# 8021X
+disable 802.1xconfig 802.1x auth_protocol radius_eapconfig 802.1x capability ports 1-26 none
+# SNMPv3
+delete snmp community public
+delete snmp community private
+delete snmp user initial
+delete snmp group initial
+delete snmp view restricted all
+delete snmp view CommunityView all
+delete snmp group public
+delete snmp group private
+delete snmp group ReadGroup
+delete snmp group WriteGroup
+config snmp engineID 800000ab03001346e27b4b
+create snmp view RMONView 1.0.8802 view_type included
+create snmp view RMONView 1.3.6.1 view_type included
+create snmp view CommunityView 1.0.8802 view_type included
+create snmp view CommunityView 1.3.6.1 view_type included
+create snmp group public v1 read_view CommunityView notify_view CommunityView 
+create snmp group public v2c read_view CommunityView notify_view CommunityView 
+create snmp group private v1 read_view CommunityView write_view CommunityView notify_view CommunityView 
+create snmp group private v2c read_view CommunityView write_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052 v1 read_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052 v2c read_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052_OpI706 v1 read_view RMONView write_view RMONView notify_view RMONView 
+create snmp group NotImaR3052_OpI706 v2c read_view RMONView write_view RMONView notify_view RMONView 
+create snmp group public_orenburgn46960 v2c read_view CommunityView notify_view CommunityView 
+create snmp group public_orenburgn46960_rmon v2c read_view RMONView write_view RMONView notify_view RMONView 
+create snmp community NotImaR3052 view CommunityView read_only
+create snmp community NotImaR3052_OpI706 view RMONView read_write
+create snmp host 79.140.16.7 v1  NotImaR3052 
+create snmp host 79.140.16.7 v1  NotImaR3052_OpI706 
+# FDB
+config fdb aging_time 300
+# MAC_ADDRESS_TABLE_NOTIFICATION
+config mac_notification interval 1 historysize 1disable mac_notificationconfig mac_notification ports 1-26 disable
+# ACL
+disable cpu_interface_filtering
+# SNTP
+enable sntp
+config time_zone operator + hour 5 min 0
+config sntp primary 79.140.16.8 secondary 79.140.16.7 poll-interval 180
+config dst disable
+# LACP
+config link_aggregation algorithm ip_sourceconfig lacp_port 1-26 mode passive
+# ARP
+config arp_aging time 20
+# SNOOP
+config igmp_snooping default host_timeout 260 router_timeout 260 leave_timer 2 state disableconfig igmp_snooping querier default query_interval 125 max_response_time 10 robustness_variable 2 config igmp_snooping querier default last_member_query_interval 1 state disable
+# IGMP
+config igmp ipif System version 2 query_interval 125 max_response_time 10 robustness_variable 2 state disableconfig igmp ipif System last_member_query_interval 1  
+# PIM
+disable pimconfig pim ipif System hello 30 jp_interval 60 state disable
+# DVMRP
+disable dvmrpconfig dvmrp ipif System metric 1 probe 10 neighbor_timeout 35 state disable 
+# RIP
+config rip ipif System authentication disable tx_mode disable rx_mode disable state disabledisable rip
+# MD5
+# OSPF
+config ospf ipif System area 0.0.0.0 priority 1 hello_interval 10 dead_interval 40 metric 1 authentication none state disableconfig ospf router_id 0.0.0.0disable ospf
+# DNSR
+disable dnsrconfig dnsr primary nameserver 0.0.0.0config dnsr secondary nameserver 0.0.0.0disable dnsr cachedisable dnsr static
+# BOOTP
+disable bootp_relayconfig bootp_relay hops 4 time 0 
+#-------------------------------------------------------------------#             End of configuration file for DES-3326SR#-------------------------------------------------------------------

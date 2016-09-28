@@ -1,0 +1,70 @@
+DGS-3120-24TC Hardware Version A2 оттестировано на Firmware: Build 3.01.B004
+=======================================================================================
+//Блокирование NETBIOS-TCP на всех портах коммутатора в vlan физ.лиц
+create access_profile profile_id 2 profile_name 2 ip vlan tcp dst_port_mask 0xFFFF
+config access_profile profile_id 2 add access_id 45 ip vlan_id 4023 tcp dst_port 42 port all deny
+config access_profile profile_id 2 add access_id 50 ip vlan_id 4023 tcp dst_port 135 port all deny
+config access_profile profile_id 2 add access_id 55 ip vlan_id 4023 tcp dst_port 136 port all deny
+config access_profile profile_id 2 add access_id 60 ip vlan_id 4023 tcp dst_port 137 port all deny
+config access_profile profile_id 2 add access_id 65 ip vlan_id 4023 tcp dst_port 138 port all deny
+config access_profile profile_id 2 add access_id 70 ip vlan_id 4023 tcp dst_port 139 port all deny
+config access_profile profile_id 2 add access_id 75 ip vlan_id 4023 tcp dst_port 445 port all deny
+//Блокирование SSDP-TCP на всех портах коммутатора в vlan физ.лиц (простой протокол обнаружения сервисов)
+config access_profile profile_id 2 add access_id 80 ip vlan_id 4023 tcp dst_port 1900 port all deny
+//Блокирование NETBIOS-UDP на всех портах коммутатора в vlan физ.лиц
+create access_profile profile_id 3 profile_name 3 ip vlan source_ip_mask 255.255.255.255 destination_ip_mask 255.255.255.255 udp dst_port_mask 0xFFFF
+config access_profile profile_id 3 add access_id 50 ip vlan_id 4023 udp dst_port 42 port all deny
+config access_profile profile_id 3 add access_id 55 ip vlan_id 4023 udp dst_port 135 port all deny
+config access_profile profile_id 3 add access_id 60 ip vlan_id 4023 udp dst_port 136 port all deny
+config access_profile profile_id 3 add access_id 65 ip vlan_id 4023 udp dst_port 137 port all deny
+config access_profile profile_id 3 add access_id 70 ip vlan_id 4023 udp dst_port 138 port all deny
+config access_profile profile_id 3 add access_id 75 ip vlan_id 4023 udp dst_port 139 port all deny
+//Блокирование SSDP-UDP на всех портах коммутатора в vlan физ.лиц (простой протокол обнаружения сервисов)
+config access_profile profile_id 3 add access_id 80 ip vlan_id 4023 udp dst_port 1900 port all deny
+//Блокирование LLMNR-UDP (Метод разрешения имен Link Local Multicast Name Resolution используется функцией сетевого обнаружения)
+config access_profile profile_id 3 add access_id 85 ip vlan_id 4023 udp dst_port 5355 port all deny
+//Блокирование мультикаст трафика в vlan физ. лиц
+config access_profile profile_id 3 add access_id 90 ip vlan_id 4023 destination_ip 224.0.0.0 mask 255.0.0.0 port all deny
+//Сеть управления коммутаторами
+config access_profile profile_id 3 add access_id 95 ip source_ip 10.52.0.0 mask 255.255.0.0 port all permit priority 7 replace_priority
+//Ип офисного GW для доступа на телефонные шлюзы по web
+config access_profile profile_id 3 add access_id 100 ip source_ip 79.140.16.8 mask 255.255.255.255 port all permit priority 7 replace_priority
+config access_profile profile_id 3 add access_id 105 ip destination_ip 79.140.16.8 mask 255.255.255.255 port all permit priority 7 replace_priority
+//Сеть для телефонных шлюзов в vlan(диапазон 200-299) юр. лиц 
+config access_profile profile_id 3 add access_id 110 ip source_ip 10.195.0.0 mask 255.255.0.0 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 115 ip destination_ip 10.195.0.0 mask 255.255.0.0 port all permit priority 5 replace_priority
+//Подсеть si3000 (телефония)
+config access_profile profile_id 3 add access_id 120 ip source_ip 10.73.8.0 mask 255.255.255.0 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 125 ip destination_ip 10.73.8.0 mask 255.255.255.0 port all permit priority 5 replace_priority
+//RTU (телефония)
+config access_profile profile_id 3 add access_id 130 ip source_ip 10.1.56.42 mask 255.255.255.255 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 135 ip destination_ip 10.1.56.42 mask 255.255.255.255 port all permit priority 5 replace_priority
+//Подсеть в vlan физ. лиц
+config access_profile profile_id 3 add access_id 140 ip source_ip 10.196.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 145 ip destination_ip 10.196.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+//Подсеть в vlan юр. лиц
+config access_profile profile_id 3 add access_id 150 ip source_ip 10.64.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 155 ip destination_ip 10.64.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+//Подсеть в vlan физ. лиц с отрицательным балансом
+config access_profile profile_id 3 add access_id 160 ip source_ip 10.204.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 165 ip destination_ip 10.204.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+//Подсеть DHCP relay
+config access_profile profile_id 3 add access_id 170 ip source_ip 10.8.0.1 mask 255.224.0.255 port all permit priority 0 replace_priority
+config access_profile profile_id 3 add access_id 175 ip destination_ip 10.8.0.1 mask 255.224.0.255 port all permit priority 0 replace_priority
+//Подсеть DRS серверов
+config access_profile profile_id 3 add access_id 180 ip destination_ip 10.9.0.0 mask 255.255.255.0 port all permit priority 0 replace_priority
+config access_profile profile_id 3 add access_id 185 ip source_ip 10.9.0.0 mask 255.255.255.0 port all permit priority 0 replace_priority
+config access_profile profile_id 3 add access_id 190 ip udp dst_port 53 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 195 ip udp dst_port 67 port all permit priority 2 replace_priority
+//Запрет левых dhcp
+config access_profile profile_id 3 add access_id 200 ip vlan_id 4022 udp dst_port 68 port all deny
+config access_profile profile_id 3 add access_id 205 ip vlan_id 4023 udp dst_port 68 port all deny
+config access_profile profile_id 3 add access_id 210 ip vlan_id 3111 udp dst_port 68 port all deny
+//Разрешить ARP и PPPOE для всех
+create access_profile profile_id 4 profile_name 4 ethernet vlan 0xFFF ethernet_type
+config access_profile profile_id 4 add access_id 5 ethernet ethernet_type 0x806 port all permit
+config access_profile profile_id 4 add access_id 10 ethernet ethernet_type 0x8863 port all permit
+config access_profile profile_id 4 add access_id 15 ethernet ethernet_type 0x8864 port all permit
+//Запретить все остальное для физ.лиц без ЛБВ(локал без впн) и юр.лиц
+config access_profile profile_id 4 add access_id 20 ethernet vlan_id 3111 port all deny
+config access_profile profile_id 4 add access_id 30 ethernet vlan_id 4022 port all deny
