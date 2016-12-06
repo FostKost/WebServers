@@ -179,7 +179,7 @@
        <?php
        if (isset($_GET['type']))
 {
-    if ($_GET['type']=="create")//скрипт на создание вланы
+    if ($_GET['type']=="create"&& $_GET['u']!=""&& $_GET['p']!=""&& $_GET['vlan']!="" )//скрипт на создание вланы
     {
       $cmd="start C:/WebServers/home/localhost/www/scripts/ruby/eogs/create_vlan.rb ".$_GET['vlan']." ".$_GET['u']." ".$_GET['p'];
       echo $cmd;
@@ -189,10 +189,11 @@
       exec ( $cmd );
       echo "<script language='javascript'>\n";
       echo "setTimeout(\"alert('Vlan создана!!!')\",9000)\n";
+      echo "window.location.href = window.location.href.replace(window.location.search,'')+'?type=var&vlan=".$_GET['vlan']."&port=".$_GET['port']."&u=".$_GET['u']."&p=".$_GET['p']."'\n";
       echo "</script>\n";
     }
 
-    if ($_GET['type']=="delete")//скрипт на удаление вланы
+    if ($_GET['type']=="delete"&& $_GET['u']!=""&& $_GET['p']!=""&& $_GET['vlan']!="")//скрипт на удаление вланы
     {
       $cmd="start C:/WebServers/home/localhost/www/scripts/ruby/eogs/delete_vlan.rb ".$_GET['vlan']." ".$_GET['u']." ".$_GET['p'];
       echo "<script language='javascript'>\n";
@@ -201,11 +202,12 @@
       exec ( $cmd );
       echo "<script language='javascript'>\n";
       echo "setTimeout(\"alert('Vlan удалена!!!')\",9000)\n";
+      echo "window.location.href = window.location.href.replace(window.location.search,'')+'?type=var&vlan=".$_GET['vlan']."&port=".$_GET['port']."&u=".$_GET['u']."&p=".$_GET['p']."'\n";
       echo "</script>\n";
 
     }
 
-    if ($_GET['type']=="delete_on_port")//скрипт на удаление вланы с порта
+    if ($_GET['type']=="delete_on_port"&& $_GET['u']!=""&& $_GET['p']!=""&& $_GET['vlan']!=""&& $_GET['port']!="")//скрипт на удаление вланы с порта
     {
       $cmd="start C:/WebServers/home/localhost/www/scripts/ruby/eogs/delet_vlan_ports.rb ".$_GET['vlan']." ".$_GET['port']." ".$_GET['u']." ".$_GET['p'];
       echo "<script language='javascript'>\n";
@@ -213,11 +215,12 @@
       echo "</script>\n";
       echo "<script language='javascript'>\n";
       echo "setTimeout(\"alert('Vlan удалена с портов!!!')\",9000)\n";
+      echo "window.location.href = window.location.href.replace(window.location.search,'')+'?type=var&vlan=".$_GET['vlan']."&port=".$_GET['port']."&u=".$_GET['u']."&p=".$_GET['p']."'\n";
       echo "</script>\n";
       exec ( $cmd );
     }
 
-    if ($_GET['type']=="add_on_port")//скрипт на добавление вланы на порт.
+    if ($_GET['type']=="add_on_port"&& $_GET['u']!=""&& $_GET['p']!=""&& $_GET['vlan']!=""&& $_GET['port']!="")//скрипт на добавление вланы на порт.
     {
       $cmd="start C:/WebServers/home/localhost/www/scripts/ruby/eogs/add_vlan_ports.rb ".$_GET['vlan']." ".$_GET['port']." ".$_GET['u']." ".$_GET['p'];
       echo "<script language='javascript'>\n";
@@ -226,6 +229,14 @@
       exec ( $cmd );
       echo "<script language='javascript'>\n";
       echo "setTimeout(\"alert('Vlan добавлена на порты!!!')\",9000)\n";
+      echo "window.location.href = window.location.href.replace(window.location.search,'')+'?type=var&vlan=".$_GET['vlan']."&port=".$_GET['port']."&u=".$_GET['u']."&p=".$_GET['p']."'\n";
+      echo "</script>\n";
+    }
+
+    if ($_GET['type']=="var")
+    {
+      echo "<script language='javascript'>\n";
+      #echo "alert('ОК!')\n";
       echo "</script>\n";
     }
 

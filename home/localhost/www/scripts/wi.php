@@ -24,6 +24,24 @@
                   var url=window.location.href.replace(window.location.search,'')+'?type=delete&vlan='+vlan+'&wi='+wi+'&port='+port+'&u='+user+'&p='+password;
                   window.location.href = url
                 }
+                function transfer() {
+                  var user=document.getElementById("user").value;
+                  var password=document.getElementById("password").value;
+                  var vlan=document.getElementById("vlan").value;
+                  var wi=document.getElementById("wi").value;
+                  var port=document.getElementById("port").value;
+                  var url=window.location.href.replace(window.location.search,'')+'?type=transf&vlan='+vlan+'&wi='+wi+'&port='+port+'&u='+user+'&p='+password;
+                  window.location.href = url
+                }
+                function newurl() {
+                  var user=document.getElementById("user").value;
+                  var password=document.getElementById("password").value;
+                  var vlan=document.getElementById("vlan").value;
+                  var wi=document.getElementById("wi").value;
+                  var port=document.getElementById("port").value;
+                  var url=window.location.href.replace(window.location.search,'')+'?vlan='+vlan+'&wi='+wi+'&port='+port+'&u='+user+'&p='+password;
+                  window.location.href = url
+                }
 
                 function sleep (m) {var then = new Date(new Date().getTime() + m); while (new Date() < then) {}}
 
@@ -169,7 +187,9 @@
               <br>
               <br>
               <input type="button" class="btn btn-inverse" onclick="dell()"  name="delete_vlan" value="Удалить WI договор ">
-
+              <br>
+              <br>
+              <input type="button" class="btn btn-inverse" onclick="transfer()"  name="delete_vlan" value="Перенести настройки vlan на WI ">
 
 
               </div>
@@ -180,7 +200,7 @@
        <?php
        if (isset($_GET['type']))
 {
-    if ($_GET['type']=="create")//скрипт на создание вланы
+    if ($_GET['type']=="create" && $_GET['u']!=""&& $_GET['p']!=""&& $_GET['vlan']!=""&& $_GET['port']!=""&& $_GET['u']!="wi" )//скрипт на создание вланы
     {
       $cmd="start C:/WebServers/home/localhost/www/scripts/ruby/wi/create_wi.rb ".$_GET['vlan']." ".$_GET['port']." ".$_GET['wi']." ".$_GET['u']." ".$_GET['p'];
       echo $cmd;
@@ -190,10 +210,14 @@
       exec ( $cmd );
       echo "<script language='javascript'>\n";
       echo "setTimeout(\"alert('Vlan создана!!!')\",12000)\n";
+      echo "window.location.href = window.location.href.replace(window.location.search,'')+'?type=var&vlan=".$_GET['vlan']."&wi=".$_GET['wi']."&port=".$_GET['port']."&u=".$_GET['u']."&p=".$_GET['p']."'\n";
       echo "</script>\n";
+
     }
 
-    if ($_GET['type']=="delete")//скрипт на удаление вланы
+
+
+    if ($_GET['type']=="delete"&& $_GET['u']!=""&& $_GET['p']!=""&& $_GET['u']!="vlan"&& $_GET['port']!=""&& $_GET['u']!="wi" )//скрипт на удаление вланы
     {
       $cmd="start C:/WebServers/home/localhost/www/scripts/ruby/wi/delete_wi ".$_GET['vlan']." ".$_GET['port']." ".$_GET['wi']." ".$_GET['u']." ".$_GET['p'];
       echo "<script language='javascript'>\n";
@@ -201,12 +225,37 @@
       echo "</script>\n";
       exec ( $cmd );
       echo "<script language='javascript'>\n";
-      echo "setTimeout(\"alert('Vlan удалена!!!')\",9000)\n";
+      echo "setTimeout(\"alert('Vlan удалена!!!')\",12000)\n";
+      echo "window.location.href = window.location.href.replace(window.location.search,'')+'?type=var&vlan=".$_GET['vlan']."&wi=".$_GET['wi']."&port=".$_GET['port']."&u=".$_GET['u']."&p=".$_GET['p']."'\n";
+
       echo "</script>\n";
 
     }
 
 
+
+    if ($_GET['type']=="transf"&& $_GET['u']!=""&& $_GET['p']!=""&& $_GET['u']!="vlan"&& $_GET['port']!=""&& $_GET['u']!="wi" )//скрипт на удаление вланы
+    {
+      $cmd="start C:/WebServers/home/localhost/www/scripts/ruby/wi/transfer_wi.rb".$_GET['vlan']." ".$_GET['wi']." ".$_GET['u']." ".$_GET['p'];
+      echo "<script language='javascript'>\n";
+      echo "alert('Скрипт выполнится в течении 10 секунд')\n";
+      echo "</script>\n";
+      exec ( $cmd );
+      echo "<script language='javascript'>\n";
+      echo "setTimeout(\"alert('Vlan удалена!!!')\",12000)\n";
+      echo "window.location.href = window.location.href.replace(window.location.search,'')+'?type=var&vlan=".$_GET['vlan']."&wi=".$_GET['wi']."&port=".$_GET['port']."&u=".$_GET['u']."&p=".$_GET['p']."'\n";
+
+      echo "</script>\n";
+
+    }
+
+
+    if ($_GET['type']=="var")
+    {
+      echo "<script language='javascript'>\n";
+      #echo "alert('ОК!')\n";
+      echo "</script>\n";
+    }
 
 
 }

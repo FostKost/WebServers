@@ -1,0 +1,570 @@
+#-------------------------------------------------------------------
+#                       DES-3028 Configuration
+#
+#                       Firmware: Build 2.90.B05
+#        Copyright(C) 2008 D-Link Corporation. All rights reserved.
+#-------------------------------------------------------------------
+
+
+# BASIC
+
+config serial_port baud_rate 9600 auto_logout 10_minutes
+
+# ACCOUNT LIST
+create account admin root
+merel1634d
+merel1634d
+
+# ACCOUNT END
+
+# PASSWORD ENCRYPTION
+enable password encryption 
+
+config terminal_line default
+enable clipaging
+enable command logging
+enable password_recovery
+
+# VLAN
+
+enable pvid auto_assign
+config vlan default delete 1-28
+config vlan default add tagged 25,26,2,3
+create vlan 79 tag 79
+config vlan 79 add tagged 25,26,2,3
+create vlan 101 tag 101
+config vlan 101 add tagged 25,26,2,3
+create vlan 201 tag 201
+config vlan 201 add tagged 25,26,2,3
+create vlan 901 tag 901
+config vlan 901 add tagged 25,26,2,3
+create vlan 3101 tag 3101
+config vlan 3101 add tagged 25,26,2,3
+create vlan 4002 tag 4002
+config vlan 4002 add tagged 25,26,2,3
+create vlan 4003 tag 4003
+config vlan 4003 add tagged 25,26,2,3
+config vlan 4003 add untagged 1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,27
+disable asymmetric_vlan
+disable qinq
+disable gvrp
+
+# IP
+
+config ipif System vlan 101 ipaddress 10.52.8.33/255.255.255.192 state enable
+config ipif System dhcp_option12 state disable
+enable telnet 23
+enable web 80
+disable autoconfig
+config autoconfig timeout 50
+
+# ROUTE
+
+create iproute default 10.52.8.1 1
+
+
+# STORM
+
+config traffic control_trap none
+config traffic control 1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,27 broadcast enable multicast enable unicast disable action drop threshold 128 countdown 5 time_interval 5
+config traffic control 25,26,2,3 broadcast enable multicast enable unicast disable action drop threshold 4096 countdown 5 time_interval 5
+
+# BANDWIDTH
+
+config bandwidth_control 1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,27 rx_rate no_limit tx_rate no_limit
+config bandwidth_control 25,26,2,3 rx_rate no_limit tx_rate no_limit
+
+# TRAF-SEGMENTATION
+
+config traffic_segmentation 1-28 forward_list 25,26
+config traffic_segmentation 25,26 forward_list 1-28
+
+# PORT_LOCK
+
+enable port_security trap_log
+config port_security ports 1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,27 admin_state enable max_learning_addr 2 lock_address_mode DeleteOnTimeout
+config port_security ports 25,26,2,3 admin_state disable max_learning_addr 1 lock_address_mode DeleteOnTimeout
+
+
+# LPD
+
+enable loopdetect
+config loopdetect recover_timer 60
+config loopdetect interval 10
+config loopdetect mode port-based
+config loopdetect trap none
+config loopdetect ports 1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,27 state enabled
+config loopdetect ports 25,26,2,3 state disabled
+
+# MANAGEMENT
+
+create trusted_host 81.30.199.70
+create trusted_host 79.140.16.7
+create trusted_host 79.140.16.8
+create trusted_host network 10.52.8.0/24
+create trusted_host network 10.1.51.0/27
+enable snmp traps 
+enable snmp authenticate_traps 
+enable snmp linkchange_traps
+config snmp linkchange_traps ports all enable
+config snmp system_name (S)
+config snmp system_location 
+config snmp system_contact OAO 'Ufanet' tel/fax. 8/3532/43-03-03
+enable rmon 
+
+# STP
+
+config stp version rstp
+config stp ports 1-28 externalCost auto edge auto p2p auto state disable
+config stp ports 1-28 fbpdu disable
+config stp ports 1-28 restricted_role false
+config stp ports 1-28 restricted_tcn false
+disable stp
+
+# LLDP
+
+enable lldp
+config lldp message_tx_interval 30
+config lldp tx_delay 2
+config lldp message_tx_hold_multiplier 4
+config lldp reinit_delay 2
+config lldp notification_interval 5
+config lldp ports 1-28 notification disable
+config lldp ports 1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,27 admin_status rx_only
+config lldp ports 25,26,2,3 admin_status tx_and_rx
+config lldp ports 25,26,2,3 mgt_addr ipv4 10.52.8.33 enable
+
+################################################ END #############################
+
+# ACL
+
+disable cpu_interface_filtering 
+create access_profile profile_id 2 profile_name 2 ip vlan tcp dst_port_mask 0xFFFF
+config access_profile profile_id 2 add access_id 45 ip vlan_id 4003 tcp dst_port 42 port all deny
+config access_profile profile_id 2 add access_id 50 ip vlan_id 4003 tcp dst_port 135 port all deny
+config access_profile profile_id 2 add access_id 55 ip vlan_id 4003 tcp dst_port 136 port all deny
+config access_profile profile_id 2 add access_id 60 ip vlan_id 4003 tcp dst_port 137 port all deny
+config access_profile profile_id 2 add access_id 65 ip vlan_id 4003 tcp dst_port 138 port all deny
+config access_profile profile_id 2 add access_id 70 ip vlan_id 4003 tcp dst_port 139 port all deny
+config access_profile profile_id 2 add access_id 75 ip vlan_id 4003 tcp dst_port 445 port all deny
+config access_profile profile_id 2 add access_id 80 ip vlan_id 4003 tcp dst_port 1900 port all deny
+create access_profile profile_id 3 profile_name 3 ip vlan source_ip_mask 255.255.255.255 destination_ip_mask 255.255.255.255 udp dst_port_mask 0xFFFF
+config access_profile profile_id 3 add access_id 50 ip vlan_id 4003 udp dst_port 42 port all deny
+config access_profile profile_id 3 add access_id 55 ip vlan_id 4003 udp dst_port 135 port all deny
+config access_profile profile_id 3 add access_id 60 ip vlan_id 4003 udp dst_port 136 port all deny
+config access_profile profile_id 3 add access_id 65 ip vlan_id 4003 udp dst_port 137 port all deny
+config access_profile profile_id 3 add access_id 70 ip vlan_id 4003 udp dst_port 138 port all deny
+config access_profile profile_id 3 add access_id 75 ip vlan_id 4003 udp dst_port 139 port all deny
+config access_profile profile_id 3 add access_id 80 ip vlan_id 4003 udp dst_port 1900 port all deny
+config access_profile profile_id 3 add access_id 85 ip vlan_id 4003 udp dst_port 5355 port all deny
+config access_profile profile_id 3 add access_id 90 ip vlan_id 4003 destination_ip 224.0.0.0 mask 255.0.0.0 port all deny
+config access_profile profile_id 3 add access_id 95 ip source_ip 10.52.0.0 mask 255.255.0.0 port all permit priority 7 replace_priority
+config access_profile profile_id 3 add access_id 100 ip source_ip 79.140.16.8 mask 255.255.255.255 port all permit priority 7 replace_priority
+config access_profile profile_id 3 add access_id 105 ip destination_ip 79.140.16.8 mask 255.255.255.255 port all permit priority 7 replace_priority
+config access_profile profile_id 3 add access_id 110 ip source_ip 10.195.0.0 mask 255.255.0.0 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 115 ip destination_ip 10.195.0.0 mask 255.255.0.0 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 120 ip source_ip 10.73.8.0 mask 255.255.255.0 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 125 ip destination_ip 10.73.8.0 mask 255.255.255.0 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 130 ip source_ip 10.1.56.42 mask 255.255.255.255 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 135 ip destination_ip 10.1.56.42 mask 255.255.255.255 port all permit priority 5 replace_priority
+config access_profile profile_id 3 add access_id 140 ip source_ip 10.196.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 145 ip destination_ip 10.196.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 150 ip source_ip 10.64.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 155 ip destination_ip 10.64.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 160 ip source_ip 10.204.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 165 ip destination_ip 10.204.0.1 mask 255.252.0.255 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 170 ip source_ip 10.8.0.1 mask 255.224.0.255 port all permit priority 0 replace_priority
+config access_profile profile_id 3 add access_id 175 ip destination_ip 10.8.0.1 mask 255.224.0.255 port all permit priority 0 replace_priority
+config access_profile profile_id 3 add access_id 180 ip destination_ip 10.9.0.0 mask 255.255.255.0 port all permit priority 0 replace_priority
+config access_profile profile_id 3 add access_id 185 ip source_ip 10.9.0.0 mask 255.255.255.0 port all permit priority 0 replace_priority
+config access_profile profile_id 3 add access_id 190 ip udp dst_port 53 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 195 ip udp dst_port 67 port all permit priority 2 replace_priority
+config access_profile profile_id 3 add access_id 200 ip vlan_id 4002 udp dst_port 68 port all deny
+config access_profile profile_id 3 add access_id 205 ip vlan_id 4003 udp dst_port 68 port all deny
+config access_profile profile_id 3 add access_id 210 ip vlan_id 3101 udp dst_port 68 port all deny
+create access_profile profile_id 4 profile_name 4 ethernet vlan 0xFFF ethernet_type
+config access_profile profile_id 4 add access_id 5 ethernet ethernet_type 0x806 port all permit
+config access_profile profile_id 4 add access_id 10 ethernet ethernet_type 0x8863 port all permit
+config access_profile profile_id 4 add access_id 15 ethernet ethernet_type 0x8864 port all permit
+config access_profile profile_id 4 add access_id 20 ethernet vlan_id 3101 port all deny
+config access_profile profile_id 4 add access_id 30 ethernet vlan_id 4002 port all deny
+config access_profile profile_id 3 add access_id auto_assign ip source_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority 
+config access_profile profile_id 3 add access_id auto_assign ip destination_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority 
+
+# QOS
+
+config scheduling_mechanism strict
+config scheduling 0 strict
+config scheduling 0 weight 1 
+config scheduling 1 weight 2 
+config scheduling 2 weight 4 
+config scheduling 3 weight 8 
+config 802.1p user_priority 0 1
+config 802.1p user_priority 1 0
+config 802.1p user_priority 2 0
+config 802.1p user_priority 3 1
+config 802.1p user_priority 4 2
+config 802.1p user_priority 5 2
+config 802.1p user_priority 6 3
+config 802.1p user_priority 7 3
+config cos tos value 0 class 0
+config cos tos value 1 class 0
+config cos tos value 2 class 0
+config cos tos value 3 class 0
+config cos tos value 4 class 0
+config cos tos value 5 class 0
+config cos tos value 6 class 0
+config cos tos value 7 class 0
+config dscp_mapping dscp_value 0 class 0
+config dscp_mapping dscp_value 1 class 0
+config dscp_mapping dscp_value 2 class 0
+config dscp_mapping dscp_value 3 class 0
+config dscp_mapping dscp_value 4 class 0
+config dscp_mapping dscp_value 5 class 0
+config dscp_mapping dscp_value 6 class 0
+config dscp_mapping dscp_value 7 class 0
+config dscp_mapping dscp_value 8 class 0
+config dscp_mapping dscp_value 9 class 0
+config dscp_mapping dscp_value 10 class 0
+config dscp_mapping dscp_value 11 class 0
+config dscp_mapping dscp_value 12 class 0
+config dscp_mapping dscp_value 13 class 0
+config dscp_mapping dscp_value 14 class 0
+config dscp_mapping dscp_value 15 class 0
+config dscp_mapping dscp_value 16 class 0
+config dscp_mapping dscp_value 17 class 0
+config dscp_mapping dscp_value 18 class 0
+config dscp_mapping dscp_value 19 class 0
+config dscp_mapping dscp_value 20 class 0
+config dscp_mapping dscp_value 21 class 0
+config dscp_mapping dscp_value 22 class 0
+config dscp_mapping dscp_value 23 class 0
+config dscp_mapping dscp_value 24 class 0
+config dscp_mapping dscp_value 25 class 0
+config dscp_mapping dscp_value 26 class 0
+config dscp_mapping dscp_value 27 class 0
+config dscp_mapping dscp_value 28 class 0
+config dscp_mapping dscp_value 29 class 0
+config dscp_mapping dscp_value 30 class 0
+config dscp_mapping dscp_value 31 class 0
+config dscp_mapping dscp_value 32 class 0
+config dscp_mapping dscp_value 33 class 0
+config dscp_mapping dscp_value 34 class 0
+config dscp_mapping dscp_value 35 class 0
+config dscp_mapping dscp_value 36 class 0
+config dscp_mapping dscp_value 37 class 0
+config dscp_mapping dscp_value 38 class 0
+config dscp_mapping dscp_value 39 class 0
+config dscp_mapping dscp_value 40 class 0
+config dscp_mapping dscp_value 41 class 0
+config dscp_mapping dscp_value 42 class 0
+config dscp_mapping dscp_value 43 class 0
+config dscp_mapping dscp_value 44 class 0
+config dscp_mapping dscp_value 45 class 0
+config dscp_mapping dscp_value 46 class 0
+config dscp_mapping dscp_value 47 class 0
+config dscp_mapping dscp_value 48 class 0
+config dscp_mapping dscp_value 49 class 0
+config dscp_mapping dscp_value 50 class 0
+config dscp_mapping dscp_value 51 class 0
+config dscp_mapping dscp_value 52 class 0
+config dscp_mapping dscp_value 53 class 0
+config dscp_mapping dscp_value 54 class 0
+config dscp_mapping dscp_value 55 class 0
+config dscp_mapping dscp_value 56 class 0
+config dscp_mapping dscp_value 57 class 0
+config dscp_mapping dscp_value 58 class 0
+config dscp_mapping dscp_value 59 class 0
+config dscp_mapping dscp_value 60 class 0
+config dscp_mapping dscp_value 61 class 0
+config dscp_mapping dscp_value 62 class 0
+config dscp_mapping dscp_value 63 class 0
+config 802.1p default_priority 1-28 0
+config cos mapping port 1-28 ethernet 802.1p  
+
+# MIRROR
+
+disable mirror
+
+# SYSLOG
+
+enable syslog
+create syslog host 1 ipaddress 10.0.5.126 severity all facility local3 udp_port 514 state enable 
+config log_save_timing on_demand
+
+# PACKET_FROM_CPU
+
+config mgmt_pkt_priority default
+
+# SSL
+
+disable ssl 
+enable ssl ciphersuite RSA_with_RC4_128_MD5 
+enable ssl ciphersuite RSA_with_3DES_EDE_CBC_SHA 
+enable ssl ciphersuite DHE_DSS_with_3DES_EDE_CBC_SHA 
+enable ssl ciphersuite RSA_EXPORT_with_RC4_40_MD5 
+config ssl cachetimeout 600 
+
+# PORT
+
+disable jumbo_frame
+config ports 1-28 learning enable
+config ports 1-28 mdix auto
+config ports 25-28 medium_type fiber speed auto flow_control disable state enable clear_description
+config ports 25-28 medium_type fiber learning enable
+
+# OAM
+
+# DDM
+
+config ddm trap disable
+config ddm log enable
+config ddm ports 25-28 state enable shutdown alarm
+
+# TIME_RANGE
+
+# GM
+
+config sim candidate
+disable sim
+config sim dp_interval 30
+config sim hold_time 100
+
+# SNMPv3
+
+delete snmp community public
+delete snmp community private
+delete snmp user initial
+delete snmp group initial
+delete snmp view restricted all
+delete snmp view CommunityView all
+delete snmp group public
+delete snmp group private
+delete snmp group ReadGroup
+delete snmp group WriteGroup
+config snmp engineID 800000ab03001346e27b4b
+create snmp view RMONView 1.0.8802 view_type included
+create snmp view RMONView 1.3.6.1 view_type included
+create snmp view CommunityView 1.0.8802 view_type included
+create snmp view CommunityView 1.3.6.1 view_type included
+create snmp group ReadGroup v1 read_view CommunityView notify_view CommunityView 
+create snmp group ReadGroup v2c read_view CommunityView notify_view CommunityView 
+create snmp group WriteGroup v1 read_view CommunityView write_view CommunityView notify_view CommunityView 
+create snmp group WriteGroup v2c read_view CommunityView write_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052 v1 read_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052 v2c read_view CommunityView notify_view CommunityView 
+create snmp group NotImaR3052_OpI706 v1 read_view RMONView write_view RMONView notify_view RMONView 
+create snmp group NotImaR3052_OpI706 v2c read_view RMONView write_view RMONView notify_view RMONView 
+create snmp community NotImaR3052 view CommunityView read_only
+create snmp community NotImaR3052_OpI706 view RMONView read_write
+create snmp host 79.140.16.7 v1  NotImaR3052 
+create snmp host 79.140.16.7 v1  NotImaR3052_OpI706 
+
+# PROTOCOL_VLAN
+
+
+# 8021X
+
+disable 802.1x
+config 802.1x auth_protocol radius_eap
+config radius parameter timeout 5 retransmit 2
+config 802.1x capability ports 1-28 none
+config 802.1x auth_parameter ports 1-28 direction both port_control auto quiet_period 60 tx_period 30 supp_timeout 30 server_timeout 30 max_req 2 reauth_period 3600 enable_reauth disable
+
+# PPPOE
+
+config pppoe circuit_id_insertion state disable
+config pppoe circuit_id_insertion ports 1-28 state enable circuit_id ip
+
+# MAC_ADDRESS_TABLE_NOTIFICATION
+
+config mac_notification interval 1 historysize 1
+disable mac_notification
+config mac_notification ports 1-28 disable
+
+# LACP
+
+config lacp_ports 1-28 mode passive
+config link_aggregation algorithm mac_source
+
+# ERPS
+
+config erps log disable
+config erps trap disable
+disable erps
+
+# MULTI FILTER
+
+config max_mcast_group ports 1-28 max_group 1024
+
+# BPDU_TUNNEL
+
+config bpdu_tunnel ports all type none
+disable bpdu_tunnel
+
+# BPDU_PROTECTION
+
+config bpdu_protection ports 1-28 mode shutdown
+
+# SAFEGUARD_ENGINE
+
+config safeguard_engine state disable utilization rising 30 falling 20 trap_log disable mode fuzzy
+
+# BANNER_PROMP
+
+config command_prompt default
+config greeting_message default
+
+# SSH
+
+config ssh algorithm 3DES enable
+config ssh algorithm AES128 enable
+config ssh algorithm AES192 enable
+config ssh algorithm AES256 enable
+config ssh algorithm arcfour enable
+config ssh algorithm blowfish enable
+config ssh algorithm cast128 enable
+config ssh algorithm twofish128 enable
+config ssh algorithm twofish192 enable
+config ssh algorithm twofish256 enable
+config ssh algorithm MD5 enable
+config ssh algorithm SHA1 enable
+config ssh algorithm RSA enable
+config ssh algorithm DSA enable
+config ssh authmode password enable
+config ssh authmode publickey enable
+config ssh authmode hostbased enable
+config ssh server maxsession 8
+config ssh server contimeout 120
+config ssh server authfail 2
+config ssh server rekey never
+config ssh user duty authmode password
+config ssh user root authmode password
+disable ssh
+
+# SNOOP
+
+disable igmp_snooping
+config igmp_snooping data_driven_learning max_learned_entry 56
+config igmp_snooping vlan_name default state disable fast_leave disable 
+config igmp_snooping data_driven_learning vlan_name default aged_out disable 
+config igmp_snooping querier all query_interval 125 max_response_time 10 robustness_variable 2 last_member_query_interval 1 state disable version 3 
+config igmp access_authentication ports 1-28 state disable
+
+# FDB
+
+config fdb aging_time 300
+config multicast port_filtering_mode all filter_unregistered_groups
+config multicast port_filtering_mode 1-28 forward_unregistered_groups
+enable flood_fdb
+config flood_fdb log disable trap disable
+
+# VLAN_TRUNK
+
+disable vlan_trunk
+
+# SMTP
+
+disable smtp
+
+# SNTP
+
+enable sntp
+config time_zone operator + hour 5 min 0
+config sntp primary 79.140.16.8 secondary 79.140.16.7 poll-interval 180
+config dst disable
+
+# DOS_PREVENTION
+
+disable dos_prevention trap_log 
+config dos_prevention dos_type land_attack action drop state enable 
+config dos_prevention dos_type blat_attack action drop state enable 
+config dos_prevention dos_type smurf_attack action drop state enable 
+config dos_prevention dos_type tcp_null_scan action drop state enable 
+config dos_prevention dos_type tcp_xmascan action drop state enable 
+config dos_prevention dos_type tcp_synfin action drop state enable 
+config dos_prevention dos_type tcp_syn_srcport_less_1024 action drop state disable 
+
+# DHCP_SERVER_SCREENING
+
+config filter dhcp_server ports 1-28 state disable
+config filter dhcp_server illegal_server_log_suppress_duration 5min
+config filter dhcp_server trap disable
+config filter dhcp_server log disable
+
+# ADDRBIND
+
+disable address_binding dhcp_snoop
+disable address_binding trap_log
+disable address_binding arp_inspection
+config address_binding ip_mac ports 1-28 state disable allow_zeroip disable forward_dhcppkt enable
+config address_binding ip_mac ports 1-28 mode arp stop_learning_threshold 500
+config address_binding dhcp_snoop max_entry ports 1-28 limit 5
+
+# ARPSPOOF
+
+
+# CFM
+
+# MBA
+
+disable mac_based_access_control
+disable authorization attributes
+
+# MLDSNP
+
+
+# ARP
+
+config arp_aging time 20
+config gratuitous_arp send ipif_status_up enable
+config gratuitous_arp send dup_ip_detected enable
+config gratuitous_arp learning enable
+disable gratuitous_arp ipif System trap
+enable gratuitous_arp ipif System log
+
+# AAA
+
+create authen server_host 10.0.5.126 protocol radius port 1812 key "8kJuk45oM" timeout 5 retransmit 2
+config authen server_group radius delete server_host 10.0.5.126 protocol radius
+config authen server_group radius add server_host 10.0.5.126 protocol radius
+config authen_login default method radius local
+config authen_enable default method local_enable
+config authen application console login default
+config authen application console enable default
+config authen application telnet login default
+config authen application telnet enable default
+config authen application ssh login default
+config authen application ssh enable default
+config authen application http login default
+config authen application http enable default
+config authen parameter response_timeout 30
+config authen parameter attempt 3
+enable authen_policy
+config admin local_enable
+
+merel1634d
+merel1634d
+
+# DHCP_RELAY
+
+disable dhcp_relay
+config dhcp_relay hops 4 time 0 
+config dhcp_relay option_82 state disable
+config dhcp_relay option_82 check disable
+config dhcp_relay option_82 policy replace
+config dhcp_relay option_82 circuit_id default
+config dhcp_relay option_82 remote_id default
+
+# DHCP_LOCAL_RELAY
+
+disable dhcp_local_relay
+config dhcp_local_relay option_82 circuit_id default
+config dhcp_local_relay option_82 remote_id default
+config dhcp_local_relay option_82 ports 1-28 policy keep
+
+# NDP
+
+#-------------------------------------------------------------------
+#             End of configuration file for DES-3028
+#------------------------------------------------------------------- 

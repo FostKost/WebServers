@@ -22,6 +22,9 @@
 <address>
 <serial>
 
+<conf client>
+<conf system>
+<usolate port>
 
 
 

@@ -1,0 +1,419 @@
+
+#-------------------------------------------------------------------
+#                       DES-3526 Configuration
+#
+#                       Firmware: Build 6.20.B12
+#        Copyright(C) 2011 D-Link Corporation. All rights reserved.
+#-------------------------------------------------------------------
+
+
+# BASIC
+
+config serial_port baud_rate 9600 auto_logout 10_minutes
+enable telnet 23
+disable web
+config terminal_line default
+enable clipaging
+debug error_log auto_reboot enabled
+disable broadcast_ping_reply
+
+# ACCOUNT LIST
+
+create account admin root encrypt sha_1 *@&py45Tw8+ubVKY63KjFZM/0LxVlfQGEQk
+
+
+# PASSWORD ENCRYPTION
+
+enable password encryption
+
+# COMMAND LOGGING
+
+enable command logging
+
+# PASSWORD RECOVERY
+
+enable password_recovery
+
+# BNR
+
+config command_prompt default
+
+# VLAN
+
+disable asymmetric_vlan
+config vlan default delete 1-26
+config vlan default add tagged <system port>
+create vlan <remote vlan> tag <remote vlan>
+config vlan <remote vlan> add tagged <system port>
+create vlan <system vlan> tag <system vlan>
+config vlan <system vlan> add tagged <system port>
+create vlan <phone vlan> tag <phone vlan>
+config vlan <phone vlan> add tagged <system port>
+create vlan <ipn vlan> tag <ipn vlan>
+config vlan <ipn vlan> add tagged <system port>
+create vlan <nol vlan> tag <nol vlan>
+config vlan <nol vlan> add tagged <system port>
+create vlan <vpn ur vlan> tag <vpn ur vlan>
+config vlan <vpn ur vlan> add tagged <system port>
+create vlan <vpn fiz vlan> tag <vpn fiz vlan>
+config vlan <vpn fiz vlan> add tagged <system port>
+config vlan <vpn fiz vlan> add untagged <client port>
+disable gvrp
+config gvrp <client port> state disable ingress_checking enable acceptable_frame admit_all pvid <vpn fiz vlan>
+config gvrp <system port> state disable ingress_checking enable acceptable_frame admit_all pvid 1
+
+# IP
+
+config ipif System vlan <system vlan> ipaddress <ip>/<mask> state enable
+disable autoconfig
+config autoconfig timeout 50
+config ipif System dhcp_option12 state disable
+
+# ROUTE
+
+create iproute default <getwey> 1
+
+# STORM
+
+config traffic control_trap none
+config traffic control <client port> broadcast enable multicast enable unicast disable action drop threshold 128
+config traffic control <system port> broadcast enable multicast enable unicast disable action drop threshold 4096
+
+# QOS
+
+config scheduling 0 max_packet 50 max_latency 0
+config scheduling 1 max_packet 100 max_latency 150
+config scheduling 2 max_packet 200 max_latency 50
+config scheduling 3 max_packet 255 max_latency 10
+config 802.1p user_priority 0 0
+config 802.1p user_priority 1 0
+config 802.1p user_priority 2 1
+config 802.1p user_priority 3 1
+config 802.1p user_priority 4 2
+config 802.1p user_priority 5 2
+config 802.1p user_priority 6 3
+config 802.1p user_priority 7 3
+config 802.1p default_priority 25-26 0
+config 802.1p default_priority 1-24 1
+config bandwidth_control 1-26 rx_rate no_limit tx_rate no_limit
+
+# TRAF-SEGMENTATION
+
+config traffic_segmentation 1-26 forward_list <up>
+config traffic_segmentation <up> forward_list 1-26
+
+# PORT_LOCK
+
+enable port_security trap_log
+config port_security ports <client port> admin_state enable max_learning_addr 2 lock_address_mode DeleteOnTimeout
+config port_security ports <system port> admin_state disable max_learning_addr 1 lock_address_mode DeleteOnTimeout
+
+# MANAGEMENT
+
+create trusted_host 81.30.199.70
+create trusted_host 79.140.16.7
+create trusted_host 79.140.16.8
+create trusted_host network 10.52.<kv>.0/24
+create trusted_host 79.140.28.4
+create trusted_host network 10.1.51.0/27
+enable snmp traps
+enable snmp authenticate traps
+config snmp system_name PL0A188010537
+config snmp system_location <address>
+config snmp system_contact OAO 'Ufanet' tel/fax. 8/3532/43-03-03
+enable rmon
+
+# LLDP
+
+enable lldp
+config lldp message_tx_interval 30
+config lldp tx_delay 2
+config lldp message_tx_hold_multiplier 4
+config lldp reinit_delay 2
+config lldp notification_interval 5
+config lldp ports 1-26 notification disable
+config lldp ports <client port> admin_status rx_only
+config lldp ports <system port> admin_status tx_and_rx
+config lldp ports <system port> mgt_addr ipv4 <ip> enable
+
+# LOOP_DETECT
+
+enable loopdetect
+config loopdetect recover_timer 60
+config loopdetect interval 10
+config loopdetect mode port-based
+config loopdetect ports <client port> state enabled
+config loopdetect ports <system port> state disabled
+
+###################################END##############################
+
+# GM
+
+config sim candidate
+disable sim
+config sim dp_interval 30
+config sim hold_time 100
+
+# SYSLOG
+
+enable syslog
+config system_severity trap information
+config system_severity log information
+create syslog host 1 ipaddress 10.0.5.126 severity all facility local3 udp_port 514 state enable
+
+# MIRROR
+
+disable mirror
+
+# PORT
+
+config ports 1-24 speed auto flow_control disable mdix auto learning enable state enable trap enable
+config ports 25-26 medium_type copper speed auto flow_control disable mdix auto learning enable state enable trap enable
+config ports 25-26 medium_type fiber speed auto flow_control disable learning enable state enable trap enable
+
+# DDM
+
+config ddm trap enable
+config ddm log enable
+config ddm ports 25-26 state enable
+config ddm ports 25-26 shutdown none
+
+# 8021X
+
+disable 802.1x
+config 802.1x auth_protocol radius_eap
+config radius parameter timeout 5 retransmit 2
+config 802.1x capability ports 1-26 none
+config 802.1x auth_parameter ports 1-26 direction both port_control auto quiet_period 60 tx_period 30 supp_timeout 30 server_timeout 30 max_req 2 reauth_period 3600 enable_reauth disable
+
+# SNMPv3
+
+delete snmp community public
+delete snmp community private
+delete snmp user initial
+delete snmp group initial
+delete snmp group ReadGroup
+delete snmp group WriteGroup
+delete snmp view restricted all
+delete snmp view CommunityView all
+config snmp engineID 800000ab03001346e27b4b
+create snmp view RMONView 1.0.8802 view_type included
+create snmp view RMONView 1.3.6.1 view_type included
+create snmp view CommunityView 1.0.8802 view_type included
+create snmp view CommunityView 1.3.6.1 view_type included
+create snmp group public v1 read_view CommunityView notify_view CommunityView
+create snmp group public v2c read_view CommunityView notify_view CommunityView
+create snmp group private v1 read_view CommunityView write_view CommunityView notify_view CommunityView
+create snmp group private v2c read_view CommunityView write_view CommunityView notify_view CommunityView
+create snmp group NotImaR3052 v1 read_view CommunityView notify_view CommunityView
+create snmp group NotImaR3052 v2c read_view CommunityView notify_view CommunityView
+create snmp group NotImaR3052_OpI706 v1 read_view RMONView write_view RMONView notify_view RMONView
+create snmp group NotImaR3052_OpI706 v2c read_view RMONView write_view RMONView notify_view RMONView
+create snmp group public_orenburgn46960 v2c read_view CommunityView notify_view CommunityView
+create snmp group public_orenburgn46960_rmon v2c read_view RMONView write_view RMONView notify_view RMONView
+create snmp community NotImaR3052 view CommunityView read_only
+create snmp community NotImaR3052_OpI706 view RMONView read_write
+create snmp host 79.140.16.7 v1 NotImaR3052
+create snmp host 79.140.16.7 v1 NotImaR3052_OpI706
+config snmp coldstart_traps enable
+config snmp warmstart_traps enable
+enable snmp linkchange traps
+
+# Firm
+
+config configuration trap save disable
+config configuration trap upload disable
+config configuration trap download disable
+
+# FDB
+
+config fdb aging_time 300
+config multicast port_filtering_mode 1-26 forward_unregistered_groups
+
+# MAC_ADDRESS_TABLE_NOTIFICATION
+
+config mac_notification interval 1 historysize 1
+disable mac_notification
+config mac_notification ports 1-26 disable
+
+# STP
+
+config stp version rstp
+config stp maxage 20 maxhops 20 forwarddelay 15 txholdcount 6 fbpdu enable
+config stp priority 32768 instance_id 0 
+config stp hellotime 2
+config stp mst_config_id name 00:1E:58:A3:59:66 revision_level 0
+config stp trap new_root enable topo_change enable
+config stp ports 1-26  state disable
+disable stp
+config stp ports 1-24 externalCost auto edge false p2p false
+config stp ports 1-26 fbpdu disable
+config stp ports 1-24 restricted_role true
+config stp ports 1-14,16-20,22-24 restricted_tcn true
+config stp mst_ports 1-26 instance_id 0 internalCost auto priority 128
+config stp ports 15,21,25-26 restricted_tcn false
+config stp ports 25-26 externalCost auto edge false p2p auto
+config stp ports 25-26 restricted_role false
+
+# MULTI FILTER
+
+config max_mcast_group ports 1-26 action drop
+config max_mcast_group ports 1-26 max_group infinite
+
+# SSH
+
+config ssh server maxsession 8
+config ssh server contimeout 120
+config ssh server authfail 2
+config ssh server rekey never
+config ssh server port 22
+disable ssh
+config ssh user root authmode password
+
+# SSL
+
+disable ssl
+enable ssl ciphersuite RSA_with_RC4_128_MD5
+enable ssl ciphersuite RSA_with_3DES_EDE_CBC_SHA
+enable ssl ciphersuite DHE_DSS_with_3DES_EDE_CBC_SHA
+enable ssl ciphersuite RSA_EXPORT_with_RC4_40_MD5
+config ssl cachetimeout timeout 600
+
+# DNS_RESOLVER
+
+enable dns_resolver
+config name_server timeout 3
+
+# SAFE_GUARD
+
+config safeguard_engine state disable cpu_utilization rising_threshold 100 falling_threshold 20 trap_log disable
+
+# TIMERANGE
+
+
+# security_ACL
+
+disable address_binding acl_mode
+disable address_binding dhcp_snoop
+disable dhcp_relay
+disable dhcp_local_relay
+config pppoe circuit_id_insertion state disable
+disable address_binding arp_inspection
+
+# ACL
+
+disable cpu_interface_filtering
+
+# SNTP
+
+enable sntp
+config time_zone operator + hour 5 min 0
+config sntp primary 79.140.16.8 secondary 79.140.16.7 poll-interval 180
+config dst disable
+
+# IPBIND
+
+disable address_binding trap_log
+config address_binding dhcp_snoop max_entry ports 1-26 limit 5
+
+# FILTER
+
+
+# PPPoE_Circuit_ID_Insertion
+
+config pppoe circuit_id_insertion ports 1-26 state enable circuit_id ip
+
+# SNOOP
+
+disable igmp_snooping
+config igmp_snooping default host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier default query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier default last_member_query_interval 1 state disable
+config igmp_snooping 78 host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier 78 query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier 78 last_member_query_interval 1 state disable
+config igmp_snooping 103 host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier 103 query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier 103 last_member_query_interval 1 state disable
+config igmp_snooping 203 host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier 203 query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier 203 last_member_query_interval 1 state disable
+config igmp_snooping 903 host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier 903 query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier 903 last_member_query_interval 1 state disable
+config igmp_snooping 3103 host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier 3103 query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier 3103 last_member_query_interval 1 state disable
+config igmp_snooping 4006 host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier 4006 query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier 4006 last_member_query_interval 1 state disable
+config igmp_snooping 4007 host_timeout 260 router_timeout 260 leave_timer 2 state disable
+config igmp_snooping querier 4007 query_interval 125 max_response_time 10 robustness_variable 2
+config igmp_snooping querier 4007 last_member_query_interval 1 state disable
+config limited_multicast_addr ports 1-26 access deny state disable
+config igmp access_authentication ports 1-26 state disable
+
+# LACP
+
+config link_aggregation algorithm mac_source
+config lacp_port 1-26 mode passive
+
+# GVLAN
+
+
+# ARP
+
+config arp_aging time 300
+config gratuitous_arp send ipif_status_up enable
+config gratuitous_arp send dup_ip_detected enable
+config gratuitous_arp learning enable
+
+# AAA
+
+create authen server_host 10.0.5.126 protocol radius port 1812 key "8kJuk45oM" timeout 5 retransmit 2
+config authen server_group radius delete server_host 10.0.5.126 protocol radius
+config authen server_group radius add server_host 10.0.5.126 protocol radius
+config authen_login default method radius local
+config authen_enable default method  local_enable
+config authen application console login default
+config authen application console enable default
+config authen application telnet login default
+config authen application telnet enable default
+config authen application ssh login default
+config authen application ssh enable default
+config authen application http login default
+config authen application http enable default
+config authen parameter response_timeout 30
+config authen parameter attempt 3
+enable authen_policy
+config authen enable_admin none state enable
+config authen enable_admin radius state enable
+config authen enable_admin tacacs state enable
+config authen enable_admin tacacs+ state enable
+config authen enable_admin xtacacs state enable
+config authen enable_admin local state enable
+config admin local_enable
+
+merel1634d
+merel1634d
+
+# DHCP_RELAY
+
+config dhcp_relay hops 4 time 0
+config dhcp_relay option_82 state disable
+config dhcp_relay option_82 check disable
+config dhcp_relay option_82 policy replace
+config dhcp_relay option_82 remote_id default
+config dhcp_relay option_60 state disable
+config dhcp_relay option_60 default mode drop
+config dhcp_relay option_61 state disable
+config dhcp_relay option_61 default drop
+
+# DHCP_LOCAL_RELAY
+
+config dhcp_local_relay option_82 remote_id default
+config dhcp_local_relay option_82 ports 1-26 policy keep
+
+#-------------------------------------------------------------------
+#             End of configuration file for DES-3526
+#-------------------------------------------------------------------

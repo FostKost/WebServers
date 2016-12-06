@@ -3,10 +3,10 @@ require 'rubygems'
 require 'json'
 require 'open-uri'
 require 'net-telnet'
-dev="10.52.8.19"
-port="23"
-@vlan="3961"
- @user="fast"
+dev="10.52.211.66"
+port="0"
+@vlan="814"
+ @user="fast_k"
  @password="H347MHcerf"
 cmd1="sh ports 1"
 @stop=["281692","889530","273003","273003","889489","889239","262344","278335","263242","889531","263243","913647",""]# id коммутаторов на цк
@@ -36,7 +36,7 @@ def telnetd_vlan_d(ip,vlan,down,f)#добавление вланы dowlink
   tn.cmd("sa"){|c|  print c}
   tn.waitfor(/#/){|c| print c}
 
-  tn.close
+  #tn.close
 
 
 end
@@ -82,7 +82,7 @@ def telnetd_vlan(ip,vlan,up,down)# добавление вланы Uplonk
    tn.print(cmd2)
   tn.waitfor(/#/)
    tn.print(cmd3)
-  tn.waitfor(/#/)
+  #tn.waitfor(/#/)
    tn.print("sa")
   tn.waitfor(/#/)
 
@@ -129,7 +129,7 @@ def switch_tree(device_id,ip,downlink)
 #=========Получаем json=============
  @stop.push(device_id)
 
-url="http://ugin.core.ufanet.ru//api/get_object_port_links?network_object_id="+device_id+"&user=fast_k&password=H347MHafcn"
+p url="http://ugin.core.ufanet.ru//api/get_object_port_links?network_object_id="+device_id+"&user=fast_k&password=H347MHafcn"
 json = open(url).read
 obj = JSON.parse(json)
 
@@ -169,17 +169,17 @@ i=0
               #Еби гусей!!!
               #пробрасываем влану на  uplink
                 #===========ЗАКРЫВАЕМ ТЕЛНЕТ===============
-                  if (!@stop.include?(next_c))
+                  p next_c
+                  if p (!@stop.include?(next_c))
 
                   switch_tree(next_c,next_ip,down_on_nex)
-
-
+                  p i
+                  p "Device "+device_id+" IP "+ ip +" downlink " + downlink + " uplink " + port_u
+                  telnetd_vlan(ip,@vlan, port_u, downlink)
+                  #telnetd_vlan_del(ip,@vlan)
+                  @count+=1
                   end
 
-              p "Device "+device_id+" IP "+ ip +" downlink " + downlink + " uplink " + port_u
-              telnetd_vlan(ip,@vlan, port_u, downlink)
-              #telnetd_vlan_del(ip,@vlan)
-              @count+=1
 
 
               #=========конец работы===============================

@@ -28,20 +28,19 @@ enable pvid auto_assign
 config vlan default delete 1-10
 create vlan 79 tag 79
 config vlan 79 add tagged 9-10
-create vlan 121 tag 121
-config vlan 121 add tagged 9-10
-create vlan 221 tag 221
-config vlan 221 add tagged 9-10
-create vlan 921 tag 921
-config vlan 921 add tagged 9-10
-create vlan 3121 tag 3121
-config vlan 3121 add tagged 9-10
-create vlan 4042 tag 4042
-config vlan 4042 add tagged 9-10
-config vlan 4042 add untagged 1-2
-create vlan 4043 tag 4043
-config vlan 4043 add tagged 9-10
-config vlan 4043 add untagged 3-8
+create vlan 111 tag 111
+config vlan 111 add tagged 9-10
+create vlan 211 tag 211
+config vlan 211 add tagged 9-10
+create vlan 911 tag 911
+config vlan 911 add tagged 9-10
+create vlan 3111 tag 3111
+config vlan 3111 add tagged 9-10
+create vlan 4022 tag 4022
+config vlan 4022 add tagged 9-10
+create vlan 4023 tag 4023
+config vlan 4023 add tagged 9-10
+config vlan 4023 add untagged 1-8
 disable gvrp
 disable vlan_trunk
 config gvrp nni_bpdu_addr dot1d
@@ -49,7 +48,7 @@ disable asymmetric_vlan
 
 # IP
 
-config ipif System ipaddress 10.52.2.78/26 vlan 121 state enable
+config ipif System ipaddress 10.52.9.74/26 vlan 111 state enable
 config serial_port auto_logout 10_minutes
 enable telnet 23
 enable web 80
@@ -58,7 +57,7 @@ disable autoconfig
 
 # ROUTE
 
-create iproute default 10.52.2.65 1
+create iproute default 10.52.9.65 1
 
 # STORM
 
@@ -113,14 +112,14 @@ config loopdetect ports 1-8 state enable
 create trusted_host 81.30.199.70
 create trusted_host 79.140.16.7
 create trusted_host 79.140.16.8
-create trusted_host network 10.52.2.0/24
+create trusted_host network 10.52.9.0/24
 create trusted_host network 10.1.51.0/27
 enable snmp
 enable snmp traps 
 enable snmp authenticate traps 
 config snmp linkchange_traps ports 1-10 enable
 config snmp system_name (S)
-config snmp system_location Kashirina 4 p2
+config snmp system_location Kima 25 p4
 config snmp system_contact OAO "Ufanet" tel/fax. 8/3532/430303 
 enable rmon 
 
@@ -141,7 +140,7 @@ config lldp reinit_delay 2
 config lldp notification_interval 5
 config lldp ports 1-10 notification disable
 config lldp ports 9-10 admin_status tx_and_rx
-config lldp ports 9-10 mgt_addr ipv4 10.52.2.78 enable
+config lldp ports 9-10 mgt_addr ipv4 10.52.9.74 enable
 config lldp ports 1-8 admin_status rx_only
 
 #############################################################################################################################################
@@ -150,29 +149,29 @@ config lldp ports 1-8 admin_status rx_only
 
 disable cpu_interface_filtering 
 create access_profile profile_id 2 ip vlan tcp dst_port_mask 0xFFFF                                                                             
-config access_profile profile_id 2 add access_id 5 ip vlan 4043 tcp dst_port 42  port 1-10 deny                                                 
-config access_profile profile_id 2 add access_id 10 ip vlan 4043 tcp dst_port 135  port 1-10 deny                                               
-config access_profile profile_id 2 add access_id 15 ip vlan 4043 tcp dst_port 136  port 1-10 deny                                               
-config access_profile profile_id 2 add access_id 20 ip vlan 4043 tcp dst_port 137  port 1-10 deny                                               
-config access_profile profile_id 2 add access_id 25 ip vlan 4043 tcp dst_port 138  port 1-10 deny                                               
-config access_profile profile_id 2 add access_id 30 ip vlan 4043 tcp dst_port 139  port 1-10 deny                                               
-config access_profile profile_id 2 add access_id 35 ip vlan 4043 tcp dst_port 445  port 1-10 deny                                               
-config access_profile profile_id 2 add access_id 40 ip vlan 4043 tcp dst_port 1900  port 1-10 deny                                              
+config access_profile profile_id 2 add access_id 5 ip vlan 4023 tcp dst_port 42  port 1-10 deny                                                 
+config access_profile profile_id 2 add access_id 10 ip vlan 4023 tcp dst_port 135  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 15 ip vlan 4023 tcp dst_port 136  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 20 ip vlan 4023 tcp dst_port 137  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 25 ip vlan 4023 tcp dst_port 138  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 30 ip vlan 4023 tcp dst_port 139  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 35 ip vlan 4023 tcp dst_port 445  port 1-10 deny                                               
+config access_profile profile_id 2 add access_id 40 ip vlan 4023 tcp dst_port 1900  port 1-10 deny                                              
 create access_profile profile_id 3 ip vlan udp dst_port_mask 0xFFFF                                                                             
-config access_profile profile_id 3 add access_id 45 ip vlan 4043 udp dst_port 42  port 1-10 deny                                                
-config access_profile profile_id 3 add access_id 50 ip vlan 4043 udp dst_port 135  port 1-10 deny                                               
-config access_profile profile_id 3 add access_id 55 ip vlan 4043 udp dst_port 136  port 1-10 deny                                               
-config access_profile profile_id 3 add access_id 60 ip vlan 4043 udp dst_port 137  port 1-10 deny                                               
-config access_profile profile_id 3 add access_id 65 ip vlan 4043 udp dst_port 138  port 1-10 deny                                               
-config access_profile profile_id 3 add access_id 70 ip vlan 4043 udp dst_port 139  port 1-10 deny                                               
-config access_profile profile_id 3 add access_id 75 ip vlan 4043 udp dst_port 1900  port 1-10 deny                                              
-config access_profile profile_id 3 add access_id 80 ip vlan 4043 udp dst_port 5355  port 1-10 deny  
+config access_profile profile_id 3 add access_id 45 ip vlan 4023 udp dst_port 42  port 1-10 deny                                                
+config access_profile profile_id 3 add access_id 50 ip vlan 4023 udp dst_port 135  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 55 ip vlan 4023 udp dst_port 136  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 60 ip vlan 4023 udp dst_port 137  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 65 ip vlan 4023 udp dst_port 138  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 70 ip vlan 4023 udp dst_port 139  port 1-10 deny                                               
+config access_profile profile_id 3 add access_id 75 ip vlan 4023 udp dst_port 1900  port 1-10 deny                                              
+config access_profile profile_id 3 add access_id 80 ip vlan 4023 udp dst_port 5355  port 1-10 deny  
 config access_profile profile_id 3 add access_id auto_assign ip source_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority
 config access_profile profile_id 3 add access_id auto_assign ip destination_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority
 config access_profile profile_id 3 add access_id auto_assign ip source_ip 77.79.160.2 mask 255.255.255.255 port all permit priority 7 replace_priority
 config access_profile profile_id 3 add access_id auto_assign ip destination_ip 77.79.160.2 mask 255.255.255.255 port all permit priority 7 replace_priority                                            
 create access_profile profile_id 4 ip vlan destination_ip_mask 255.0.0.0                                                                        
-config access_profile profile_id 4 add access_id 5 ip vlan 4043 destination_ip 224.0.0.0  port 1-10 deny                                        
+config access_profile profile_id 4 add access_id 5 ip vlan 4023 destination_ip 224.0.0.0  port 1-10 deny                                        
 create access_profile profile_id 5 ip source_ip_mask 255.255.0.0                                                                                
 config access_profile profile_id 5 add access_id 5 ip source_ip 10.52.0.0  port 1-10 permit priority 7 replace_priority rx_rate no_limit        
 create access_profile profile_id 6 ip source_ip_mask 255.255.255.255 destination_ip_mask 255.255.255.255                                        
@@ -210,15 +209,15 @@ create access_profile profile_id 15 ip udp dst_port_mask 0xFFFF
 config access_profile profile_id 15 add access_id 5 ip udp dst_port 53  port 1-10 permit priority 2 replace_priority rx_rate no_limit           
 config access_profile profile_id 15 add access_id 10 ip udp dst_port 67  port 1-10 permit priority 2 replace_priority rx_rate no_limit          
 create access_profile profile_id 16 ip vlan udp dst_port_mask 0xFFFF                                                                            
-config access_profile profile_id 16 add access_id 5 ip vlan 4042 udp dst_port 68  port 1-10 deny                                                
-config access_profile profile_id 16 add access_id 10 ip vlan 4043 udp dst_port 68  port 1-10 deny                                               
-config access_profile profile_id 16 add access_id 15 ip vlan 3121 udp dst_port 68  port 1-10 deny                                               
+config access_profile profile_id 16 add access_id 5 ip vlan 4022 udp dst_port 68  port 1-10 deny                                                
+config access_profile profile_id 16 add access_id 10 ip vlan 4023 udp dst_port 68  port 1-10 deny                                               
+config access_profile profile_id 16 add access_id 15 ip vlan 3111 udp dst_port 68  port 1-10 deny                                               
 create access_profile profile_id 17 ethernet vlan ethernet_type                                                                                 
 config access_profile profile_id 17 add access_id 5 ethernet ethernet_type 0x806  port 1-10 permit rx_rate no_limit                             
 config access_profile profile_id 17 add access_id 10 ethernet ethernet_type 0x8863  port 1-10 permit rx_rate no_limit                           
 config access_profile profile_id 17 add access_id 15 ethernet ethernet_type 0x8864  port 1-10 permit rx_rate no_limit                           
-config access_profile profile_id 17 add access_id 20 ethernet vlan 3121  port 1-10 deny                                                         
-config access_profile profile_id 17 add access_id 25 ethernet vlan 4042  port 1-10 deny           
+config access_profile profile_id 17 add access_id 20 ethernet vlan 3111  port 1-10 deny                                                         
+config access_profile profile_id 17 add access_id 25 ethernet vlan 4022  port 1-10 deny           
 config access_profile profile_id 3 add access_id auto_assign ip source_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority 
 config access_profile profile_id 3 add access_id auto_assign ip destination_ip 92.50.143.178 mask 255.255.255.255 port all permit priority 7 replace_priority 
 
